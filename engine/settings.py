@@ -92,6 +92,13 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': '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',
             'key': ''
         }
+    },
+    'facebook': {
+        'APP': {
+            'client_id': '750155280173526',
+            'secret': '05f115c52c63f88c5517e5a76745f84f',
+            'key': '39f6f1d75bfef05134cd9a4088a8369b'
+        }
     }
 }
 WSGI_APPLICATION = 'engine.wsgi.application'

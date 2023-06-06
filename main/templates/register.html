@@ -1,4 +1,5 @@
 {% load static %} {% block content %}
+{% load socialaccount %}
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
@@ -492,11 +493,11 @@
 								<h3>Sign in with Social Media Account</h3>
 							</div>
                         
-                        <a class="btn btn-block btn-social btn-facebook">
+                        <a href="{% provider_login_url 'facebook'%}" class="btn btn-block btn-social btn-facebook">
             <span class="fa fa-facebook"></span> Sign in with Facebook
           </a>
           
-          <a class="btn btn-block btn-social btn-google">
+          <a href="{% provider_login_url 'google' %}" class="btn btn-block btn-social btn-google">
             <span class="fa fa-google"></span> Sign in with Google
           </a>
                         </div>
