@@ -107,10 +107,19 @@ WSGI_APPLICATION = 'engine.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce',
+        'USER': 'root',
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST':'localhost',
+        'PORT':'3306',
+        'OPTIONS':{
+            'autocommit':True
+        }
     }
 }
 

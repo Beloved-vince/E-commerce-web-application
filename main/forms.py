@@ -17,7 +17,7 @@ class SignUpForm(forms.ModelForm):
         return first_name last_name email and password and confrim to the template
         """
         model = User
-        fields = ['first_name','last_name', 'email', 'password', 'confirm_pssword']
+        fields = ['first_name','last_name', 'email', 'password']
         
         def clean(self):
             """
@@ -30,12 +30,11 @@ class SignUpForm(forms.ModelForm):
             if password and confirm_password and password != confirm_password:
                 self.add_error('confirm_password', 'Passwords do not match')
             
-            def save(self, commit=True):
-                """
-                Save hashed password to the database
-                """
-                user = super().save(commit=False)
-                if commit:
-                    user.save()
-                return user
-                
+        def save(self, commit=True):
+            """
+            Save hashed password to the database
+            """
+            user = super().save(commit=False)
+            if commit:
+                user.save()
+            return user
