@@ -450,26 +450,25 @@
 							<div class="login-title">
 								<h3>Create New User Account</h3>
 							</div>
-							<div class="login-form">
-								<form method="POST" name="signupForm" >
+							<div class="login-form" id="errorMsg">
+								<form method="POST" name="signupForm" id="signup_form">
 									{% csrf_token %}
-									{{ form.non_field_errors }}
 									<div class="form-group login-page">
 										<label for="exampleInputName1">First Name <span>*</span></label>
 										<input type="text" class="form-control" id="exampleInputName1" name="first_name">
 									</div>
 									<div class="form-group login-page">
 										<label for="exampleInputName2">Last Name <span>*</span></label>
-										<input type="text" class="form-control" id="exampleInputName2" name="last_name">
+										<input type="text" class="form-control" id="exampleInputName2" name="last_name" required>
 									</div>
 								
 									<div class="form-group login-page">
-										<label for="exampleInputEmail1">Email <span>*</span></label>
-										<input type="email" class="form-control" id="exampleInputEmail1" name="email">
+										<label for="exampleInputEmail1">Email <span>*</span></labelexampleInputPassword1>
+										<input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
 									</div>								
 									<div class="form-group login-page">
 										<label for="exampleInputPassword1">Password <span>*</span></label>
-										<input type="Password" class="form-control" id="exampleInputPassword1" name="password">
+										<input type="Password" class="form-control" id="exampleInputPassword1" name="password" required>
 									</div>							
 									<div class="form-group login-page">
 										<label for="exampleInputPassword2">Confirm Password <span>*</span></label>
@@ -510,9 +509,10 @@
 					</div>
 					<div class="col-lg-6 col-md-8 col-sm-12 col-lg-offset-1 col-xs-12">
 						<div class="search-box">
-							<form action="#">
+							<form method="POST" id="subscribe">
+								{% csrf_token %}
 								<input type="email" placeholder="Enter your email address"/>
-								<button><span class="lnr lnr-envelope"></span></button>
+								<button type="submit"><span class="lnr lnr-envelope"></span></button>
 							</form>
 						</div>
 					</div>
@@ -650,6 +650,109 @@
         <script src="js/plugins.js"></script>
 		<!-- main js -->
         <script src="js/main.js"></script>
+		<script>
+			// function checkPasswordMatch() {
+			// 	var password = document.getElementById("exampleInputPassword1").value;
+			// 	var confirmPassword = document.getElementById("exampleInputPassword2").value;
+			// 	var first_name = document.getElementById("exampleInputName1").value
+			// 	var last_name = document.getElementById("exampleInputName2").value
+			// 	var email = document.getElementById("exampleInputEmail1").value
+				
+			// 	if (first_name == "" || last_name == "" || email == ""){
+			// 		alert("Missing value in the input box");
+			// 		return false;
+			// 	}
+			// 	if (password !== confirmPassword) {
+			// 		alert("Passwords do not match");
+			// 		return false;
+			// 	}
+			// 	return true;
+			// }
+
+const userdata =  document.getElementById("signup_form")
+userdata.addEventListener("submit", submitHandler);
+       
+function submitHandler(e){
+		e.preventDefault();
+
+		first_name = document.getElementById("exampleInputName1").value;
+		last_name = document.getElementById("exampleInputName2").value;
+		confirm_password = document.getElementById("exampleInputPassword2").value
+		email = document.getElementById("exampleInputEmail1").value
+		password = document.getElementById("exampleInputPassword1").value
+
+		if (first_name == "" || last_name == "" || password == "" || email == "") {
+			alert("Please fill the required fields correctly")
+			return false;
+		}
+		else if (password != confirm_password){
+			console.log(password + confirm_password)
+			alert("Password do not match");
+			return false;
+		}
+		else {
+				const formData = new FormData();
+		//console.log(name);
+		formData.append('first_name', first_name);
+		formData.append('email', email);
+		formData.append('last_name', last_name);
+		formData.append('password', password);
+		formData.append('confirm_password', confirm_password)
+		formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+		console.log(formData);
+		fetch('{% url "sign-up" %}', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => response)
+		.then(data => {
+			alert('Success! click on the login botton to continue')
+		})
+		.catch(error => {
+			alert("error in the input field. Try again ")
+		});
+				return true;
+		}
+
+}
+
+
+
+const subscriber =  document.getElementById("subscribe")
+subscriber.addEventListener("submit", submitHandler);
+       
+function submitHandler(e){
+		e.preventDefault();
+
+		email = document.getElementById("exampleInputEmail1").value
+
+		if (email == "") {
+			alert("Please fill the required fields correctly")
+			return false;
+		}
+
+		else {
+				const formData = new FormData();
+		//console.log(name);
+		formData.append('email', email);
+		formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+		console.log(formData);
+		fetch('{% url "news-letter" %}', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => response)
+		.then(data => {
+			alert('Success! Welcome to our news letter')
+		})
+		.catch(error => {
+			alert("error in the input field. Try again ")
+		});
+				return true;
+		}
+
+}
+		</script>
     </body>
 </html>
 {% endblock %}

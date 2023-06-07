@@ -61,3 +61,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
