@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser,  BaseUserManager
+from django.contrib.auth.models import AbstractUser,  BaseUserManager
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -10,12 +10,16 @@ class UserManager(BaseUserManager):
         Create user model params for signing up
     """
     def create_user(self, email, password=None, **extra_fields):
+        """
+        Define user data arguements
+        """
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
+
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
     
     def create_superuser(self, email, password=None, **extra_fields):
@@ -27,14 +31,15 @@ class UserManager(BaseUserManager):
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=200, unique=False)
+    last_name = models.CharField(max_length=200, unique=False)
+    email = models.EmailField(unique=False)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'password', 'confirm_password']
 
     objects = UserManager()
 

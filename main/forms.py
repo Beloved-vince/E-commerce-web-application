@@ -9,15 +9,16 @@ class SignUpForm(forms.ModelForm):
         email: email field
         password: Password input
     """
-    passwword = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    confirm_password = forms.CharField(widget=forms.PasswordInput, required=True)
+    email = forms.EmailField(required=True)
 
     class Meta:
         """
         return first_name last_name email and password and confrim to the template
         """
         model = User
-        fields = ['first_name','last_name', 'email', 'password']
+        fields = ['first_name','last_name', 'email', 'password', 'confirm_password']
         
         def clean(self):
             """
@@ -28,13 +29,13 @@ class SignUpForm(forms.ModelForm):
             password = cleaned_data.get('passsword')
             confirm_password = cleaned_data.get('confirm_password')
             if password and confirm_password and password != confirm_password:
-                self.add_error('confirm_password', 'Passwords do not match')
-            
+                raise forms.ValidationError('Passwords do not match')
+    
         def save(self, commit=True):
             """
             Save hashed password to the database
             """
             user = super().save(commit=False)
             if commit:
-                user.save()
+                user.save(using=self._db)
             return user
