@@ -60,7 +60,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-from django.db import models
 
 class Subscription(models.Model):
     email = models.EmailField(unique=True)
@@ -68,3 +67,109 @@ class Subscription(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    
+    def __str__(self):
+        return self.name
+
+
+COLOR_CHOICES = (
+    ('red', 'Red'),
+    ('blue', 'Blue'),
+    ('green', 'Green'),
+    ('yellow', 'Yellow'),
+    ('orange', 'Orange'),
+    ('purple', 'Purple'),
+    ('pink', 'Pink'),
+    # Add more color choices here
+)
+class Product(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    
+    def __str__(self) -> str:
+        return self.name
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"Cart #{self.id}"
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    def __str__(self):
+        return f"{self.quantity} * {self.product.name} in Cart #{self.cart.id}"
+    
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"Order #{self.id}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    products = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} in Order #{self.order.id}"
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    street = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"{self.street}, {self.city}, {self.state}, {self.country}"
+
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Payment #{self.id}"
+    
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
+    
+    def __str__(self):
+        return f"Wishlist for {self.user.username}"
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)
+    
+    def __str__(self):
+        return self.code
