@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import User, Subscriber
+from .models import User, Subscription
 
 
 class SignUpForm(forms.ModelForm):
@@ -40,3 +40,11 @@ class SignUpForm(forms.ModelForm):
                 user.save(using=self._db)
             return user
 
+
+from django import forms
+from .models import Subscription
+
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Subscription
+        fields = ['email']

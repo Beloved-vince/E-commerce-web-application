@@ -1368,7 +1368,7 @@ ul.usefull-link li a:hover{
 }
 /* ---------14.Contuct-Page-Area-Start---------- */
 .page-title-wrapper {
-	background: rgba(0, 0, 0, 0) url("img/bg/contuct.jpg") no-repeat scroll center center / cover ;
+	background: rgba(0, 0, 0, 0) url("/main/static/img/bg/contuct.jpg") no-repeat scroll center center / cover ;
 	min-height: 250px;
 	position:relative;
 }

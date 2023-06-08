@@ -743,7 +743,8 @@ function submitHandler(e){
 		})
 		.then(response => response)
 		.then(data => {
-			alert('Success! Welcome to our news letter')
+			alert("Success! Thanks for subscribing for our news letter")
+			window.location.href = '/shop/'
 		})
 		.catch(error => {
 			alert("error in the input field. Try again ")

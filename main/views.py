@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from rest_framework.decorators import api_view
-from .forms import SignUpForm
+from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Subscriber
+from .models import Subscription
 from django import forms
 
 User = get_user_model()
@@ -38,14 +38,18 @@ def signup(request):
     return render(request, 'register.html')
 
 
-class SubscriptionForm(forms.Form):
-    email = forms.EmailField(required=True)
 
-def subForm(request):
+
+def subscribe(request):
     if request.method == 'POST':
-        form = SubscriptionForm(request.GET)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            Subscriber.objects.create(email=email)
+            form = SubscriptionForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return render(request, 'shop.html')
 
     return render(request, 'register.html')
+
+
+
+def shop(request):
+    return render(request, 'shop.html')
