@@ -38,8 +38,6 @@ def signup(request):
     return render(request, 'register.html')
 
 
-
-
 def subscribe(request):
     if request.method == 'POST':
             form = SubscriptionForm(request.POST)
