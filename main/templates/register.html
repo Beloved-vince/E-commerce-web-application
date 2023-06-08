@@ -511,7 +511,7 @@
 						<div class="search-box">
 							<form method="POST" id="subscribe">
 								{% csrf_token %}
-								<input type="email" placeholder="Enter your email address"/>
+								<input type="email" id="emailSub" placeholder="Enter your email address"/>
 								<button type="submit"><span class="lnr lnr-envelope"></span></button>
 							</form>
 						</div>
@@ -724,7 +724,7 @@ subscriber.addEventListener("submit", submitHandler);
 function submitHandler(e){
 		e.preventDefault();
 
-		email = document.getElementById("exampleInputEmail1").value
+		email = document.getElementById("emailSub").value
 
 		if (email == "") {
 			alert("Please fill the required fields correctly")

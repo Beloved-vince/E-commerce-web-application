@@ -40,10 +40,3 @@ class SignUpForm(forms.ModelForm):
                 user.save(using=self._db)
             return user
 
-
-class SubscriptionForm(forms.ModelForm):
-    email = forms.EmailField(required=True)
-    
-    class Meta:
-        model = Subscriber
-        fields = ["email"]

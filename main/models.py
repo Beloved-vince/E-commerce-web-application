@@ -28,8 +28,6 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-from django.contrib.auth.models import AbstractUser
-
 class User(AbstractUser):
     first_name = models.CharField(max_length=200, unique=False)
     last_name = models.CharField(max_length=200, unique=False)
@@ -64,3 +62,6 @@ class User(AbstractUser):
 
 class Subscriber(models.Model):
     email = models.EmailField(unique=True)
+
+    # def __str__(self):
+    #     return self.email

@@ -1,10 +1,10 @@
 from django.shortcuts import render, HttpResponse
 from rest_framework.decorators import api_view
-from .forms import SignUpForm, SubscriptionForm
+from .forms import SignUpForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from .models import Subscriber
-
+from django import forms
 
 User = get_user_model()
 def signup(request):
@@ -38,16 +38,14 @@ def signup(request):
     return render(request, 'register.html')
 
 
+class SubscriptionForm(forms.Form):
+    email = forms.EmailField(required=True)
 
 def subForm(request):
-    form = SubscriptionForm(request.POST)
-    try:
-        if request.method == 'POST':
-            if form.is_valid():
-                email = form.cleaned_data['email']
-                news_letter = Subscriber.objects.create(email=email)
-                news_letter.save()
-                print("success")  # Redirect to a success page
-    except Exception as e:
-        print(f"Error is {e}")    
+    if request.method == 'POST':
+        form = SubscriptionForm(request.GET)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            Subscriber.objects.create(email=email)
+
     return render(request, 'register.html')
