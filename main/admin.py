@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import User, UserManager, Subscription
+from .models import  Subscription, User, CartItem, Cart, Category, Payment,  Product, Address, Wishlist, Order, OrderItem, Coupon
+
 
 # Register your models here.
-admin.site.register(User)
-admin.site.register(Subscription)
+app_models = [ Subscription, User, CartItem, Cart, Category, Payment,  Product, Address, Wishlist, Order, OrderItem, Coupon]
+
+for all in app_models:
+    admin.site.register(all)
+    

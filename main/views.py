@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Subscription
+from .models import Subscription,  Product
 from django import forms
 
 User = get_user_model()
@@ -39,6 +39,8 @@ def signup(request):
 
 
 def subscribe(request):
+    """News letter for subscribers only"""
+    
     if request.method == 'POST':
             form = SubscriptionForm(request.POST)
             if form.is_valid():
@@ -50,4 +52,8 @@ def subscribe(request):
 
 
 def shop(request):
-    return render(request, 'shop.html')
+    product = Product.objects.all()
+    context = {
+        'products': product
+    }
+    return render(request, 'shop.html', context)
