@@ -72,41 +72,6 @@ class Subscription(models.Model):
 
 
 SUB_CATEGORY =(
-    ('make up', 'MAKE UP'),
-    ('personal care', 'PERSONAL CARE'),
-    ('fragrances', 'FRAGRANCES'),
-    ('hair care', 'HAIR CARE'),
-    ('oral care', 'ORAL CARE'),
-    ('health care', 'HEALTH CARE'),
-    ('home & kitchen', 'HOME& KITCHEN'),
-    ('office', 'OFFICE PRODUCTS'),
-    ('home & office furniture', 'HOME & OFFICE FURNITURE'),
-    ('small appliances', 'SMALL APPLIANCES'),
-    ('large appliances', 'LARGE APPLIANCES'),
-    ('mobile', 'MOBILE PHONES'),
-    ('mobile accessories', 'MOBILE ACCESSOORIES'),
-    ('tablets', 'TABLETS'),
-    ('computers', 'COMPUTER'),
-    ('data storage', 'DATA STORAGE'),
-    ('printers', 'PRINTERS'),
-    ('televisions & video', 'TELEVISION & VIDEO'),
-    ('home audio', 'HOME AUDIO'),
-    ('Generator', 'GENERATOR & PORTABLE POWER'),
-    ('women', "WOMEN'S FASHION"),
-    ('men', "MEN'S FASHION"),
-    ('kid', "KID'S FASHION"),
-    ('all', 'ALL FASHION'),
-    ('watch', 'WATCHES'),
-    ('glass', 'GLASSES'),
-    ('diapering', 'DIAPERING'),
-    ('feeding', 'FEEDING'),
-    ('toys', 'TOYS'),
-    ('bathing', 'BATHING & SKIN CARE'),
-    ('gear', 'GEAR'),
-    ('cardio training', 'CARDIO TRAINING'),
-    ('team sport', 'TEAM SPORT'),
-    ('training', 'STRENGTH TRAINING EQUIPMENT'),
-    ('accessories', 'ACCESSORIES'),
     ('official', 'OFFICIAL STORES'),
     ('books', 'BOOKS, MOVIES AND MUSIC'),
     ('pet', 'PET SUPPLIES'),
@@ -134,6 +99,71 @@ SUPERMARKET_CHOICE = (
     ('baby product', 'BABY PRODUCT'),
 )
 
+HEALTH_BEAUTY = (
+    ('make up', 'MAKE UP'),
+    ('personal care', 'PERSONAL CARE'),
+    ('fragrances', 'FRAGRANCES'),
+    ('hair care', 'HAIR CARE'),
+    ('oral care', 'ORAL CARE'),
+    ('health care', 'HEALTH CARE'),    
+)
+
+INDOOR_CHOICE = (
+    ('home & kitchen', 'HOME& KITCHEN'),
+    ('office', 'OFFICE PRODUCTS'),
+    ('home & office furniture', 'HOME & OFFICE FURNITURE'),    
+)
+
+APPLIANCES_CHOICE = (
+    ('small appliances', 'SMALL APPLIANCES'),
+    ('large appliances', 'LARGE APPLIANCES'),
+    
+)
+
+ELECTRONICS_CHOICE = (
+    ('televisions & video', 'TELEVISION & VIDEO'),
+    ('home audio', 'HOME AUDIO'),
+    ('Generator', 'GENERATOR & PORTABLE POWER'),
+)
+
+PHONE_CHOICE = (
+    ('mobile', 'MOBILE PHONES'),
+    ('mobile accessories', 'MOBILE ACCESSOORIES'),
+    ('tablets', 'TABLETS'),
+)
+
+COMPUTING_CHOICE = (
+    ('computers', 'COMPUTER'),
+    ('data storage', 'DATA STORAGE'),
+    ('printers', 'PRINTERS')
+)
+
+FASHION_CHOICE = (
+    ('women', "WOMEN'S FASHION"),
+    ('men', "MEN'S FASHION"),
+    ('kid', "KID'S FASHION"),
+    ('all', 'ALL FASHION'),
+    ('watch', 'WATCHES'),
+    ('glass', 'GLASSES'),
+)
+GAME_CHOICE = (
+    ('accessories', 'ACCESSORIES'),
+)
+
+SPORT_CHOICE = (
+    ('gear', 'GEAR'),
+    ('cardio training', 'CARDIO TRAINING'),
+    ('team sport', 'TEAM SPORT'),
+    ('training', 'STRENGTH TRAINING EQUIPMENT'),
+)
+BABY_CHOICE = (
+    ('diapering', 'DIAPERING'),
+    ('feeding', 'FEEDING'),
+    ('toys', 'TOYS'),
+    ('bathing', 'BATHING & SKIN CARE'),
+)
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100, choices=CATEGORY_CHOICE)
     slug = models.SlugField(unique=True)
@@ -154,7 +184,7 @@ COLOR_CHOICES = (
 
 class HealthBeautyProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=HEALTH_BEAUTY, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -170,7 +200,7 @@ class HealthBeautyProduct(models.Model):
     
 class IndoorProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=30, choices=INDOOR_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -183,6 +213,7 @@ class IndoorProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
 class SupermarketProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
@@ -198,9 +229,9 @@ class SupermarketProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
-class Appliances_Product(models.Model):
+class AppliancesProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=APPLIANCES_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -213,9 +244,9 @@ class Appliances_Product(models.Model):
     
     def __str__(self) -> str:
         return self.name
-class Electronics_Product(models.Model):
+class ElectronicsProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=ELECTRONICS_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -232,7 +263,7 @@ class Electronics_Product(models.Model):
 
 class PhoneProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=PHONE_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -247,7 +278,7 @@ class PhoneProduct(models.Model):
         return self.name
 class ComputingProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=COMPUTING_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -264,7 +295,7 @@ class ComputingProduct(models.Model):
 
 class FashionProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=FASHION_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -280,7 +311,7 @@ class FashionProduct(models.Model):
 
 class BabyProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=BABY_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -294,9 +325,9 @@ class BabyProduct(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class SportingProduct(models.Model):
+class SportProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    sub_category = models.CharField(max_length=20, choices=SPORT_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -310,9 +341,8 @@ class SportingProduct(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class GamingtingProduct(models.Model):
+class GameProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -333,6 +363,7 @@ class GamingtingProduct(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=CATEGORY_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
