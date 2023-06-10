@@ -56,6 +56,8 @@ def shop(request):
     
     context = {
         'products': product,
-        # 'discounted_price': product.discounted_price(),
     }
     return render(request, 'shop.html', context)
+
+def home(request):
+    return render(request, "index.html")

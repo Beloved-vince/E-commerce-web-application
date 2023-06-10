@@ -104,15 +104,18 @@ class Product(models.Model):
 
     @property
     def discounted_price(self):
-        if self.discount_percentage:
+        if self.discount_percentage is not None:
             discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
             return discounted_amount
         return self.price
     
     @property
     def discount(self):
-        self.discount_percentage = (self.discount_percentage * 100) / self.price
-        return f"{self.discount_percentage}%"
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            return ""
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

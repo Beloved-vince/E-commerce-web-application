@@ -558,22 +558,7 @@
 								</ul>
 							</div>
 						</div>
-						<!-- Category-end -->
-						<!-- sideber-ads-start -->
 						
-						<!--<div class="bedroom-sideber mt-40">
-							<div class="bedroom-title text-uppercase">
-								<h4>Compare Products</h4>		
-							</div>
-							<p>You have no items to compare.</p>
-						</div>-->	
-						<!--<div class="bedroom-sideber mt-40">
-							<div class="bedroom-title text-uppercase">
-								<h4>My Wish List</h4>
-							</div>
-							<p>You have no items in your wish list.</p>
-						</div>-->						
-						<!-- sideber-ads-end -->
 					</div>
 					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 						<!-- category-products-area-start -->
@@ -617,7 +602,7 @@
 							<div class="tab-content">
 								<div class="tab-pane active" id="viewed">
 									<div class="row">
-										{% for product in products  %}	
+										{% for product in products  %}
 										<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 											<div class="single-new-product mt-40 category-new-product">
 												<div class="product-img">
@@ -630,6 +615,9 @@
 														<a href="#"><span class="lnr lnr-cart cart_pad"></span>Add to Cart</a>
 														<a href="#"><span class="lnr lnr-heart"></span></a>
 													</div>
+													{% if product.discounted_price != product.price %}
+													<span class="new">{{ product.discount }}</span>
+													{% endif %}
 												</div>
 												<div class="product-content text-center">
 													<a href="product-details.html"><h3>{{ product.name }}</h3></a>
@@ -641,213 +629,18 @@
 														<i class="fa fa-star-o"></i>
 													</div>
 													<div class="price">
-														<h4>₦{{ product.price }}</h4> 
+														<h4>₦{{ product.discounted_price }}</h4>
+														{% if product.discounted_price != product.price %}
+														<h3 class="del-price"><del>₦{{ product.price }}</del></h3>
+														{% endif %}
 													</div>
 												</div>
 											</div>
 										</div>
 										{% endfor %}
-										
-										
-										<div class="col-lg-3 col-md-4 col-sm-6 hidden-xs">
-											<div class="single-new-product category-new-product">
-												<div class="product-img">
-													<a href="product-details.html">
-														<img src="{% static 'img/product/7.jpg' %}" class="first_img" alt="" />
-														
-													</a>
-													<div class="new-product-action">
-													<!--	<a href="#"><span class="lnr lnr-sync"></span></a>-->
-														<a href="#"><span class="lnr lnr-cart cart_pad"></span>Add to Cart</a>
-														<a href="#"><span class="lnr lnr-heart"></span></a>
-													</div>
-													<span class="new">18.4%</span>
-												</div>
-												<div class="product-content text-center">
-													<a href="product-details.html"><h3>Beaumont Summit</h3></a>
-													<div class="product-price-star">
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star-o"></i>
-														<i class="fa fa-star-o"></i>
-													</div>
-													<div class="price">
-														<h4>Rs33.00</h4> 
-														<h3 class="del-price"><del>Rs45.00</del></h3>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-3 col-md-4 col-sm-6 hidden-xs">
-											<div class="single-new-product category-new-product">
-												<div class="product-img">
-													<a href="product-details.html">
-														<img src="{% static 'img/product/4.jpg' %}" class="first_img" alt="" />
-														
-													</a>
-													<div class="new-product-action">
-														<!--<a href="#"><span class="lnr lnr-sync"></span></a>-->
-														<a href="#"><span class="lnr lnr-cart cart_pad"></span>Add to Cart</a>
-														<a href="#"><span class="lnr lnr-heart"></span></a>
-													</div>
-													<span class="new">18.4%</span>
-												</div>
-												<div class="product-content text-center">
-													<a href="product-details.html"><h3>Beaumont Summit</h3></a>
-													<div class="product-price-star">
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star-o"></i>
-														<i class="fa fa-star-o"></i>
-													</div>
-													<div class="price">
-														<h4>Rs33.00</h4> 
-														<h3 class="del-price"><del>Rs45.00</del></h3>
-													</div>
-												</div>
-											</div>
-										</div>
 									</div>
 								</div>
-								<div class="tab-pane" id="random">
-									<div class="single-category-product mt-40">
-										<div class="single-category-product-img">
-											<a href="product-details.html"><img src="{% static 'img/product/1.jpg' %}" alt="" /></a>
-										</div>
-										<div class="single-category-product-info">
-											<a href="product-details.html"><h2>Hero Hoodie</h2></a>
-											<div class="product-price-star">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star-o"></i>
-												<i class="fa fa-star-o"></i>
-											</div>
-											<div class="price category-price">
-												<h4>Rs33.00</h4> 
-												<h3 class="del-price"><del>Rs45.00</del></h3>
-											</div>
-											<p>
-												Gray and black color blocking sets you apart as the Hero Hoodie keeps you warm on 		the 	bus, campus or cold mean streets. Slanted outsize front pockets keep 	your style real . . . convenient.... Learn More 
-											</p>
-											<div class="new-product-action2 category-cart">
-												<a href="#" class="bg-black"><span class="lnr lnr-cart"></span>Add to Cart</a>
-												<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-												<a href="#"><span class="lnr lnr-heart"></span></a>
-											</div>									
-										</div>
-									</div>
-									<div class="single-category-product mt-40">
-										<div class="single-category-product-img">
-											<a href="product-details.html"><img src="{% static 'img/product/2.jpg' %}" alt="" /></a>
-										</div>
-										<div class="single-category-product-info">
-											<a href="product-details.html"><h2>Hero Hoodie</h2></a>
-											<div class="product-price-star">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star-o"></i>
-												<i class="fa fa-star-o"></i>
-											</div>
-											<div class="price category-price">
-												<h4>Rs33.00</h4> 
-												<h3 class="del-price"><del>Rs45.00</del></h3>
-											</div>
-											<p>
-												Gray and black color blocking sets you apart as the Hero Hoodie keeps you warm on 		the 	bus, campus or cold mean streets. Slanted outsize front pockets keep 	your style real . . . convenient.... Learn More 
-											</p>
-											<div class="new-product-action2 category-cart">
-												<a href="#" class="bg-black"><span class="lnr lnr-cart"></span>Add to Cart</a>
-												<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-												<a href="#"><span class="lnr lnr-heart"></span></a>
-											</div>									
-										</div>
-									</div>
-									<div class="single-category-product mt-40">
-										<div class="single-category-product-img">
-											<a href="product-details.html"><img src="{% static 'img/product/3.jpg' %}" alt="" /></a>
-										</div>
-										<div class="single-category-product-info">
-											<a href="product-details.html"><h2>Hero Hoodie</h2></a>
-											<div class="product-price-star">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star-o"></i>
-												<i class="fa fa-star-o"></i>
-											</div>
-											<div class="price category-price">
-												<h4>Rs33.00</h4> 
-												<h3 class="del-price"><del>Rs45.00</del></h3>
-											</div>
-											<p>
-												Gray and black color blocking sets you apart as the Hero Hoodie keeps you warm on 		the 	bus, campus or cold mean streets. Slanted outsize front pockets keep 	your style real . . . convenient.... Learn More 
-											</p>
-											<div class="new-product-action2 category-cart">
-												<a href="#" class="bg-black"><span class="lnr lnr-cart"></span>Add to Cart</a>
-												<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-												<a href="#"><span class="lnr lnr-heart"></span></a>
-											</div>									
-										</div>
-									</div>
-									<div class="single-category-product mt-40">
-										<div class="single-category-product-img">
-											<a href="product-details.html"><img src="{% static 'img/product/4.jpg' %}" alt="" /></a>
-										</div>
-										<div class="single-category-product-info">
-											<a href="product-details.html"><h2>Hero Hoodie</h2></a>
-											<div class="product-price-star">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star-o"></i>
-												<i class="fa fa-star-o"></i>
-											</div>
-											<div class="price category-price">
-												<h4>Rs33.00</h4> 
-												<h3 class="del-price"><del>Rs45.00</del></h3>
-											</div>
-											<p>
-												Gray and black color blocking sets you apart as the Hero Hoodie keeps you warm on 		the 	bus, campus or cold mean streets. Slanted outsize front pockets keep 	your style real . . . convenient.... Learn More 
-											</p>
-											<div class="new-product-action2 category-cart">
-												<a href="#" class="bg-black"><span class="lnr lnr-cart"></span>Add to Cart</a>
-												<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-												<a href="#"><span class="lnr lnr-heart"></span></a>
-											</div>									
-										</div>
-									</div>
-									<div class="single-category-product mt-40">
-										<div class="single-category-product-img">
-											<a href="product-details.html"><img src="{% static 'img/product/5.jpg' %}" alt="" /></a>
-										</div>
-										<div class="single-category-product-info">
-											<a href="product-details.html"><h2>Hero Hoodie</h2></a>
-											<div class="product-price-star">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star-o"></i>
-												<i class="fa fa-star-o"></i>
-											</div>
-											<div class="price category-price">
-												<h4>Rs33.00</h4> 
-												<h3 class="del-price"><del>Rs45.00</del></h3>
-											</div>
-											<p>
-												Gray and black color blocking sets you apart as the Hero Hoodie keeps you warm on 		the 	bus, campus or cold mean streets. Slanted outsize front pockets keep 	your style real . . . convenient.... Learn More 
-											</p>
-											<div class="new-product-action2 category-cart">
-												<a href="#" class="bg-black"><span class="lnr lnr-cart"></span>Add to Cart</a>
-												<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-												<a href="#"><span class="lnr lnr-heart"></span></a>
-											</div>									
-										</div>
-									</div>								
-								</div>
+								
 							</div>
 						</div>
 						<!-- category-products-area-end -->
