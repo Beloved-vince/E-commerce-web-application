@@ -97,10 +97,23 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     manufacture_by = models.CharField(max_length=200)
     color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     
     def __str__(self) -> str:
         return self.name
 
+    @property
+    def discounted_price(self):
+        if self.discount_percentage:
+            discounted_amount = self.price * (1 - self.discount_percentage / 100)
+            return discounted_amount
+        return self.price
+    
+    # @property
+    # def discount_percentage(self):
+    #     if self.discount_percentage:
+    #         return f"{int(self.discount_percentage)}%"
+    #     return None
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

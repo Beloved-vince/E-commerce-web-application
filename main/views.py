@@ -53,7 +53,9 @@ def subscribe(request):
 
 def shop(request):
     product = Product.objects.all()
+    
     context = {
-        'products': product
+        'products': product,
+        # 'discounted_price': product.discounted_price(),
     }
     return render(request, 'shop.html', context)
