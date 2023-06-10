@@ -69,26 +69,9 @@ class Subscription(models.Model):
         return self.email
 
 
-CATEGORY_CHOICE = (
-    ('supermarket', 'SUPERMARKET'),
-    ('health&beauty', 'HEALTH & BEAUTY'),
-    ('home&office', 'HOME & OFFICE'),
-    ('appliances', 'APPLIANCES'),
-    ('phones&tablets', 'PHONE & TABLETS'),
-    ('computing', 'COMPUTING'),
-    ('eletronics', 'ELECTRONICS'),
-    ('fashion', 'FASHION'),
-    ('Baby product', 'BABY PRODUCTS'),
-    ('gaming', 'GAMING'),
-    ('sporting goods', 'SPORTING GOODS'),
-    ('other categories', 'OTHER CATEGORIES'),
-)
+
 
 SUB_CATEGORY =(
-    ('food cupboard', 'FOOD'),
-    ('beverages', 'BEVERAGES'),
-    ('beer', 'BEER, WINE & SPIRITS'),
-    ('baby product', 'BABY PRODUCT'),
     ('make up', 'MAKE UP'),
     ('personal care', 'PERSONAL CARE'),
     ('fragrances', 'FRAGRANCES'),
@@ -120,8 +103,35 @@ SUB_CATEGORY =(
     ('toys', 'TOYS'),
     ('bathing', 'BATHING & SKIN CARE'),
     ('gear', 'GEAR'),
+    ('cardio training', 'CARDIO TRAINING'),
+    ('team sport', 'TEAM SPORT'),
+    ('training', 'STRENGTH TRAINING EQUIPMENT'),
+    ('accessories', 'ACCESSORIES'),
+    ('official', 'OFFICIAL STORES'),
+    ('books', 'BOOKS, MOVIES AND MUSIC'),
+    ('pet', 'PET SUPPLIES'),
 
-    
+)
+CATEGORY_CHOICE = (
+    ('supermarket', 'SUPERMARKET'),
+    ('health&beauty', 'HEALTH & BEAUTY'),
+    ('home&office', 'HOME & OFFICE'),
+    ('appliances', 'APPLIANCES'),
+    ('phones&tablets', 'PHONE & TABLETS'),
+    ('computing', 'COMPUTING'),
+    ('eletronics', 'ELECTRONICS'),
+    ('fashion', 'FASHION'),
+    ('Baby product', 'BABY PRODUCTS'),
+    ('gaming', 'GAMING'),
+    ('sporting goods', 'SPORTING GOODS'),
+    ('other categories', 'OTHER CATEGORIES'),
+)
+
+SUPERMARKET_CHOICE = (
+    ('food cupboard', 'FOOD'),
+    ('beverages', 'BEVERAGES'),
+    ('beer', 'BEER, WINE & SPIRITS'),
+    ('baby product', 'BABY PRODUCT'),
 )
 
 class Category(models.Model):
@@ -141,6 +151,185 @@ COLOR_CHOICES = (
     ('purple', 'Purple'),
     ('pink', 'Pink'),
 )
+
+class HealthBeautyProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+class IndoorProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+class SupermarketProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+class Appliances_Product(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+class Electronics_Product(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+
+class PhoneProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+class ComputingProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+
+
+class FashionProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+
+class BabyProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+
+class SportingProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+
+class GamingtingProduct(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    manufacture_by = models.CharField(max_length=200)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    
+    def __str__(self) -> str:
+        return self.name
+
+
+
+# - - -------------------------------------------- BREAKAGE - ------------------------------------------------------#
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
