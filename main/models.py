@@ -69,8 +69,63 @@ class Subscription(models.Model):
         return self.email
 
 
+CATEGORY_CHOICE = (
+    ('supermarket', 'SUPERMARKET'),
+    ('health&beauty', 'HEALTH & BEAUTY'),
+    ('home&office', 'HOME & OFFICE'),
+    ('appliances', 'APPLIANCES'),
+    ('phones&tablets', 'PHONE & TABLETS'),
+    ('computing', 'COMPUTING'),
+    ('eletronics', 'ELECTRONICS'),
+    ('fashion', 'FASHION'),
+    ('Baby product', 'BABY PRODUCTS'),
+    ('gaming', 'GAMING'),
+    ('sporting goods', 'SPORTING GOODS'),
+    ('other categories', 'OTHER CATEGORIES'),
+)
+
+SUB_CATEGORY =(
+    ('food cupboard', 'FOOD'),
+    ('beverages', 'BEVERAGES'),
+    ('beer', 'BEER, WINE & SPIRITS'),
+    ('baby product', 'BABY PRODUCT'),
+    ('make up', 'MAKE UP'),
+    ('personal care', 'PERSONAL CARE'),
+    ('fragrances', 'FRAGRANCES'),
+    ('hair care', 'HAIR CARE'),
+    ('oral care', 'ORAL CARE'),
+    ('health care', 'HEALTH CARE'),
+    ('home & kitchen', 'HOME& KITCHEN'),
+    ('office', 'OFFICE PRODUCTS'),
+    ('home & office furniture', 'HOME & OFFICE FURNITURE'),
+    ('small appliances', 'SMALL APPLIANCES'),
+    ('large appliances', 'LARGE APPLIANCES'),
+    ('mobile', 'MOBILE PHONES'),
+    ('mobile accessories', 'MOBILE ACCESSOORIES'),
+    ('tablets', 'TABLETS'),
+    ('computers', 'COMPUTER'),
+    ('data storage', 'DATA STORAGE'),
+    ('printers', 'PRINTERS'),
+    ('televisions & video', 'TELEVISION & VIDEO'),
+    ('home audio', 'HOME AUDIO'),
+    ('Generator', 'GENERATOR & PORTABLE POWER'),
+    ('women', "WOMEN'S FASHION"),
+    ('men', "MEN'S FASHION"),
+    ('kid', "KID'S FASHION"),
+    ('all', 'ALL FASHION'),
+    ('watch', 'WATCHES'),
+    ('glass', 'GLASSES'),
+    ('diapering', 'DIAPERING'),
+    ('feeding', 'FEEDING'),
+    ('toys', 'TOYS'),
+    ('bathing', 'BATHING & SKIN CARE'),
+    ('gear', 'GEAR'),
+
+    
+)
+
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, choices=CATEGORY_CHOICE)
     slug = models.SlugField(unique=True)
     
     def __str__(self):
@@ -85,8 +140,8 @@ COLOR_CHOICES = (
     ('orange', 'Orange'),
     ('purple', 'Purple'),
     ('pink', 'Pink'),
-    # Add more color choices here
 )
+
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
