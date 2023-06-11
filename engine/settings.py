@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'category',
     'main',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
