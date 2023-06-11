@@ -150,6 +150,23 @@ class SupermarketProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+
+
 class AppliancesProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.CharField(max_length=20, choices=APPLIANCES_CHOICE, default=None)
@@ -165,6 +182,24 @@ class AppliancesProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+    
+
 class ElectronicsProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.CharField(max_length=20, choices=ELECTRONICS_CHOICE, default=None)
@@ -180,7 +215,23 @@ class ElectronicsProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
     
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+
 
 class PhoneProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -197,6 +248,25 @@ class PhoneProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+
+
+
 class ComputingProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.CharField(max_length=20, choices=COMPUTING_CHOICE, default=None)
@@ -213,6 +283,22 @@ class ComputingProduct(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+        
 
 class FashionProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -229,6 +315,22 @@ class FashionProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+        
 
 class BabyProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -246,6 +348,21 @@ class BabyProduct(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+
 class SportProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.CharField(max_length=20, choices=SPORT_CHOICE, default=None)
@@ -262,6 +379,22 @@ class SportProduct(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass
+
 class GameProduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -276,3 +409,18 @@ class GameProduct(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    @property
+    def discounted_price(self):
+        if self.discount_percentage is not None:
+            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
+            return discounted_amount
+        return self.price
+    
+    @property
+    def discount(self):
+        if self.discount_percentage:
+            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
+            return f"{self.discount_percentage}%"
+        else:
+            pass

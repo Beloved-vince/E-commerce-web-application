@@ -92,77 +92,6 @@ CATEGORY_CHOICE = (
     ('other categories', 'OTHER CATEGORIES'),
 )
 
-SUPERMARKET_CHOICE = (
-    ('food cupboard', 'FOOD'),
-    ('beverages', 'BEVERAGES'),
-    ('beer', 'BEER, WINE & SPIRITS'),
-    ('baby product', 'BABY PRODUCT'),
-)
-
-HEALTH_BEAUTY = (
-    ('make up', 'MAKE UP'),
-    ('personal care', 'PERSONAL CARE'),
-    ('fragrances', 'FRAGRANCES'),
-    ('hair care', 'HAIR CARE'),
-    ('oral care', 'ORAL CARE'),
-    ('health care', 'HEALTH CARE'),    
-)
-
-INDOOR_CHOICE = (
-    ('home & kitchen', 'HOME& KITCHEN'),
-    ('office', 'OFFICE PRODUCTS'),
-    ('home & office furniture', 'HOME & OFFICE FURNITURE'),    
-)
-
-APPLIANCES_CHOICE = (
-    ('small appliances', 'SMALL APPLIANCES'),
-    ('large appliances', 'LARGE APPLIANCES'),
-    
-)
-
-ELECTRONICS_CHOICE = (
-    ('televisions & video', 'TELEVISION & VIDEO'),
-    ('home audio', 'HOME AUDIO'),
-    ('Generator', 'GENERATOR & PORTABLE POWER'),
-)
-
-PHONE_CHOICE = (
-    ('mobile', 'MOBILE PHONES'),
-    ('mobile accessories', 'MOBILE ACCESSOORIES'),
-    ('tablets', 'TABLETS'),
-)
-
-COMPUTING_CHOICE = (
-    ('computers', 'COMPUTER'),
-    ('data storage', 'DATA STORAGE'),
-    ('printers', 'PRINTERS')
-)
-
-FASHION_CHOICE = (
-    ('women', "WOMEN'S FASHION"),
-    ('men', "MEN'S FASHION"),
-    ('kid', "KID'S FASHION"),
-    ('all', 'ALL FASHION'),
-    ('watch', 'WATCHES'),
-    ('glass', 'GLASSES'),
-)
-GAME_CHOICE = (
-    ('accessories', 'ACCESSORIES'),
-)
-
-SPORT_CHOICE = (
-    ('gear', 'GEAR'),
-    ('cardio training', 'CARDIO TRAINING'),
-    ('team sport', 'TEAM SPORT'),
-    ('training', 'STRENGTH TRAINING EQUIPMENT'),
-)
-BABY_CHOICE = (
-    ('diapering', 'DIAPERING'),
-    ('feeding', 'FEEDING'),
-    ('toys', 'TOYS'),
-    ('bathing', 'BATHING & SKIN CARE'),
-)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100, choices=CATEGORY_CHOICE)
@@ -181,7 +110,6 @@ COLOR_CHOICES = (
     ('purple', 'Purple'),
     ('pink', 'Pink'),
 )
-
 
 
 
@@ -217,7 +145,7 @@ class Product(models.Model):
             self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
             return f"{self.discount_percentage}%"
         else:
-            return ""
+            pass
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
