@@ -118,7 +118,6 @@ COLOR_CHOICES = (
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=CATEGORY_CHOICE, default=None)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -127,7 +126,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     manufacture_by = models.CharField(max_length=200)
     color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=None)
     
     def __str__(self) -> str:
         return self.name

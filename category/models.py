@@ -1,5 +1,6 @@
 from django.db import models
-from main.models import COLOR_CHOICES
+from main.models import COLOR_CHOICES, Category, Product
+
 
 
 SUB_CATEGORY =(
@@ -85,342 +86,50 @@ SPORT_CHOICE = (
     ('gear', 'GEAR'),
     ('cardio training', 'CARDIO TRAINING'),
     ('team sport', 'TEAM SPORT'),
-    ('training', 'STRENGTH TRAINING EQUIPMENT'),
 )
 BABY_CHOICE = (
     ('diapering', 'DIAPERING'),
     ('feeding', 'FEEDING'),
     ('toys', 'TOYS'),
-    ('bathing', 'BATHING & SKIN CARE'),
 )
 
-
-class Category(models.Model):
-    name = models.CharField(max_length=100, choices=CATEGORY_CHOICE)
-    slug = models.SlugField(unique=True)
-    
-    def __str__(self):
-        return self.name
-
+class HealthBeautyProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=HEALTH_BEAUTY, default=None, null=True)
 # Create your models here.
-class HealthBeautyProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=HEALTH_BEAUTY, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-    
-class IndoorProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=30, choices=INDOOR_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-
-class SupermarketProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-    
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
-
-
-class AppliancesProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=APPLIANCES_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-    
-    
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
-    
-
-class ElectronicsProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=ELECTRONICS_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
 
     
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
+class IndoorProduct(Product):
+    sub_category = models.CharField(max_length=30, choices=INDOOR_CHOICE, default=None, null=True)
+
+class SupermarketProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=SUPERMARKET_CHOICE, default=None, null=True)
+
+class AppliancesProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=APPLIANCES_CHOICE, default=1,  null=True)
     
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
+
+class ElectronicsProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=ELECTRONICS_CHOICE, default=None, null=True)
 
 
-class PhoneProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=PHONE_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
+class PhoneProduct(Product):
 
-    
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
+    sub_category = models.CharField(max_length=20, choices=PHONE_CHOICE, default=None, null=True)
 
-
-
-class ComputingProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=COMPUTING_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-
-    
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
+class ComputingProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=COMPUTING_CHOICE, default=None, null=True)
         
 
-class FashionProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=FASHION_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+class FashionProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=FASHION_CHOICE, default=None, null=True)
     
-    def __str__(self) -> str:
-        return self.name
+class BabyProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=BABY_CHOICE, default=None, null=True)
     
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
-        
 
-class BabyProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=BABY_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
+class SportProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=SPORT_CHOICE, default=None, null=True)
 
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
 
-class SportProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=20, choices=SPORT_CHOICE, default=None)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-
-    
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
-
-class GameProduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    
-    def __str__(self) -> str:
-        return self.name
-    
-    @property
-    def discounted_price(self):
-        if self.discount_percentage is not None:
-            discounted_amount = round(self.price * (1 - self.discount_percentage / 100), 2)
-            return discounted_amount
-        return self.price
-    
-    @property
-    def discount(self):
-        if self.discount_percentage:
-            self.discount_percentage = round((self.discount_percentage * 100) / self.price, 2)
-            return f"{self.discount_percentage}%"
-        else:
-            pass
+class GameProduct(Product):
+    sub_category = models.CharField(max_length=20, choices=GAME_CHOICE, default=None, null=True)
