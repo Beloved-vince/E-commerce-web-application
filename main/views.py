@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
 from rest_framework.decorators import api_view
 from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
@@ -61,3 +61,10 @@ def shop(request):
 
 def home(request):
     return render(request, "index.html")
+
+
+@api_view(["GET"])
+def details(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    image_url = product.image.url
+    return render(request, 'product-details.html', {'image_url': image_url})
