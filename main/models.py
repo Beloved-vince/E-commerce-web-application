@@ -160,7 +160,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     
     def __str__(self):
-        return f"{self.quantity} * {self.product.name} in Cart #{self.cart.id}"
+        return f"{self.quantity} * {self.product.price} in Cart #{self.cart.id}"
     
 
 class Order(models.Model):

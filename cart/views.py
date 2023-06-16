@@ -13,4 +13,8 @@ class CartView(View):
         else:
             cart_items = []
     
-        total_price = sum(items)
+        total_price = sum(items.product.price * items.quantity for items in cart_items)
+        context = {
+            'cart_item': cart_items,
+            'total_price': total_price
+        }
