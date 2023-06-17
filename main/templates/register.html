@@ -668,9 +668,10 @@ function submitHandler(e){
 			method: 'POST',
 			body: formData
 		})
-		.then(response => response.json())
+		.then(response => response)
 		.then(data => {
-			alert('Success! click on the login botton to continue')
+			alert("Success! Thanks for subscribing for our news letter")
+			window.location.href = '/shop/'
 		})
 		.catch(error => {
 			alert("error in the input field. Try again ")
@@ -711,7 +712,7 @@ function subscriberForm(e){
 			window.location.href = '/shop/'
 		})
 		.catch(error => {
-			alert("error in the input field. Try again ")
+			alert("error ")
 		});
 				return true;
 		}
