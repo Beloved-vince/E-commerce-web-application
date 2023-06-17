@@ -491,7 +491,7 @@
 										</div>
 											<h4>Rs33.00</h4>
 											
-										<form method="POST" class="cart">
+										<form method="post" class="cart">
 											{% csrf_token %}
 										<div class="quick-add-to-cart">
 												<div class="numbers-row">
@@ -503,7 +503,7 @@
                                         <br/>
                                         
                                         <div class="quick-add-to-cart">
-												<button class="btn btn-lg btn-success" type="submit" onclick=""><span class="lnr lnr-cart"></span>Add to Cart</button>
+												<button class="btn btn-lg btn-success" type="submit" onclick="addToCartForm"><span class="lnr lnr-cart"></span>Add to Cart</button>
                                                 
                                                 <button data-toggle="modal" data-target="#myModal" class="single_add_to_cart_button hyper-page" type="button"><span class="lnr lnr-cart"></span>Bulk Order</button>
 											
@@ -1045,21 +1045,15 @@
 			}
 			})
 			.then(response => {
-		response.text().then(text => {
-			if (response.ok) {
-			alert('Item added to cart successfully!');
-			} else {
-			alert('Failed to add item to cart.');
-			}
-			// Use the `text` variable to access the response text
-			console.log(text);
-    // Perform additional operations with the response if needed
-  });
-});
-
-			// .catch(error => {
-			// 	console.error('Error:', error);
-			// });
+				if (response.ok) {
+				alert('Item added to cart successfully!');
+				} else {
+				alert('Failed to add item to cart.');
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
 		});
 		</script>
 		  

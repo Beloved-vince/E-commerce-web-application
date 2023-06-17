@@ -68,6 +68,7 @@ class CartView(View):
             
                 try:
                     cart = Cart.objects.get(user=request.user)
+                    print(cart)
                 except Cart.DoesNotExist:
                     cart = Cart.objects.create(user=request.user)
                 
@@ -76,7 +77,6 @@ class CartView(View):
                     cart_item = CartItem.objects.get(cart=cart, product_id=item_id)
                     cart_item.quantity += quantity
                     cart_item.save()
-                    return redirect("shop")
                 # except CartItem.DoesNotExist:
                 #     cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)# else:
                 #     cart_id = request.session.get('cart_id')
