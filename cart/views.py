@@ -1,7 +1,7 @@
 from typing import Any
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
-from main.models import Cart, CartItem
+from main.models import Cart, CartItem, User as user
 from .forms import AddToCartForm
 
 
@@ -13,11 +13,9 @@ class CartView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            try:
-                cart = Cart.objects.get(user=request.user)
-                self.cart_items = CartItem.objects.filter(cart=cart)
-            except Exception:
-                pass
+            cart = Cart.objects.get(user=request.user)
+            self.cart_items = CartItem.objects.filter(cart=cart)
+  
         else:
             # Retrieve cart data from the session or cookie for unauthenticated users
             cart_id = request.session.get('cart_id')
