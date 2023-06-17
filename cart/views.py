@@ -73,20 +73,20 @@ class CartView(View):
                     cart = Cart.objects.create(user=request.user)
                 
                 # Check if a CartItem with the same product_id already exists in the cart
-                # try:
+                try:
                     cart_item = CartItem.objects.get(cart=cart, product_id=item_id)
                     cart_item.quantity += quantity
                     cart_item.save()
-                # except CartItem.DoesNotExist:
-                #     cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)# else:
-                #     cart_id = request.session.get('cart_id')
-                #     if not cart_id:
-                #         cart = Cart.objects.create()
-                #         cart_id = cart.id
-                #         request.session['cart_id'] = cart_id
-                #     else:
-                #         cart = Cart.objects.get(id=cart_id)
-                #     self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
+                except CartItem.DoesNotExist:
+                    cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)# else:
+                    cart_id = request.session.get('cart_id')
+                    if not cart_id:
+                        cart = Cart.objects.create()
+                        cart_id = cart.id
+                        request.session['cart_id'] = cart_id
+                    else:
+                        cart = Cart.objects.get(id=cart_id)
+                    self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
                 
                     return HttpResponse("Success")
         
