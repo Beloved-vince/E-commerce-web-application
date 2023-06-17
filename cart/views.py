@@ -1,8 +1,9 @@
 from typing import Any
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
-from main.models import Cart, CartItem, User as user
+from main.models import Cart, CartItem, User
 from .forms import AddToCartForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -10,7 +11,7 @@ from .forms import AddToCartForm
 class CartView(View):
     def __init__(self):
         self.cart_items = None
-
+    
     def get(self, request):
         if request.user.is_authenticated:
             cart = Cart.objects.get(user=request.user)
@@ -62,22 +63,28 @@ class CartView(View):
         if form.is_valid():
             item_id = form.cleaned_data['product_id']
             quantity = form.cleaned_data['quantity']
+
+        if request.user.is_authenticated:
+            try:
+                cart = Cart.objects.get(user=request.user)
+            except Cart.DoesNotExist:
+                cart = Cart.objects.create(user=request.user)
             
-            if request.user.is_authenticated:
-                try:
-                    cart = Cart.objects.get(user=request.user)
-                except Cart.DoesNotExist:
-                    cart = Cart.objects.create(user=request.user)
-                self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
-            else:
-                cart_id = request.session.get('cart_id')
-                if not cart_id:
-                    cart = Cart.objects.create()
-                    cart_id = cart.id
-                    request.session['cart_id'] = cart_id
-                else:
-                    cart = Cart.objects.get(id=cart_id)
-                self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
+            # Check if a CartItem with the same product_id already exists in the cart
+            try:
+                cart_item = CartItem.objects.get(cart=cart, product_id=item_id)
+                cart_item.quantity += quantity
+                cart_item.save()
+            except CartItem.DoesNotExist:
+                cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)# else:
+            #     cart_id = request.session.get('cart_id')
+            #     if not cart_id:
+            #         cart = Cart.objects.create()
+            #         cart_id = cart.id
+            #         request.session['cart_id'] = cart_id
+            #     else:
+            #         cart = Cart.objects.get(id=cart_id)
+            #     self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
             
             return HttpResponse("Success")
         
