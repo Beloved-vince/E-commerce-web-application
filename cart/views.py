@@ -10,37 +10,81 @@ from .forms import AddToCartForm
 class CartView(View):
     def __init__(self):
         self.cart_items = None
-        
-    def get(self, request, product_id=None):
+
+    def get(self, request):
         if request.user.is_authenticated:
-            cart = Cart.objects.get(user=request.user)
-            self.cart_items = CartItem.objects.filter(cart=cart)
+            try:
+                cart = Cart.objects.get(user=request.user)
+                self.cart_items = CartItem.objects.filter(cart=cart)
+            except Exception:
+                pass
         else:
             # Retrieve cart data from the session or cookie for unauthenticated users
-            self.cart_items = request.session.get('cart_id', None)
-    
-        total_price = sum(items.product.price * items.quantity for items in self.cart_items)
+            cart_id = request.session.get('cart_id')
+            if cart_id:
+                try:
+                    cart = Cart.objects.get(id=cart_id)
+                    self.cart_items = CartItem.objects.filter(cart=cart)
+                except Cart.DoesNotExist:
+                    pass
+
+        if self.cart_items is None:
+            return HttpResponse("cart.html")
+
+        cart_data = []
+        total_price = 0
+
+        for item in self.cart_items:
+            product = item.product
+            image = product.image.url if product.image else ''
+            name = product.name
+            price = item.quantity * product.price
+            quantity = item.quantity
+            subtotal = item.quantity * product.price
+
+            cart_data.append({
+                'image': image,
+                'name': name,
+                'price': price,
+                'quantity': quantity,
+                'subtotal': subtotal
+            })
+
+            total_price += subtotal
+
         context = {
-            'cart_item': self.cart_items,
+            'cart_data': cart_data,
             'total_price': total_price
         }
-        
-        return render(request, 'cart.hmtl', context)
+
+        return render(request, 'cart.html', context)
     
     def post(self, request):
         form = AddToCartForm(request.POST)
         if form.is_valid():
-            item_id = form.cleaned_data('product_id')
-            # quantity = form.cleaned_data('quantity')
-
+            item_id = form.cleaned_data['product_id']
+            quantity = form.cleaned_data['quantity']
+            
             if request.user.is_authenticated:
-                self.cart_items = CartItem.objects.create(id=item_id)
+                try:
+                    cart = Cart.objects.get(user=request.user)
+                except Cart.DoesNotExist:
+                    cart = Cart.objects.create(user=request.user)
+                self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
             else:
-                self.cart_items = request.POST.get('cart_id')
-                request.session['cart_id'] = self.cart_items
+                cart_id = request.session.get('cart_id')
+                if not cart_id:
+                    cart = Cart.objects.create()
+                    cart_id = cart.id
+                    request.session['cart_id'] = cart_id
+                else:
+                    cart = Cart.objects.get(id=cart_id)
+                self.cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
+            
             return HttpResponse("Success")
-        return render (request, 'cart.html')
-                
+        
+        return render(request, 'product-details.html', {'form': form})
+
 
 
 

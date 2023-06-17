@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from rest_framework.decorators import api_view
 from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
@@ -7,6 +7,11 @@ from .models import Subscription,  Product
 from django import forms
 
 User = get_user_model()
+
+def home(request):
+    return render(request, "index.html")
+
+
 def signup(request):
     """
     Get user account data
@@ -29,7 +34,7 @@ def signup(request):
                 else:
                     user.set_password(password)
                     form.save()
-                    return HttpResponse("success")
+                    return redirect("shop")
             else:
                 print(form.errors)
                 return HttpResponse(form.errors)
@@ -59,12 +64,10 @@ def shop(request):
     }
     return render(request, 'shop.html', context)
 
-def home(request):
-    return render(request, "index.html")
 
-
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 def details(request, product_id):
+    
     product = get_object_or_404(Product, id=product_id)
     image_url = product.image.url
     return render(request, 'product-details.html', {'image_url': image_url})

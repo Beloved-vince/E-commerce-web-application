@@ -57,25 +57,7 @@
 							</div>
 						</div>					
 						<div class="col-lg-9 col-md-8 col-sm-7 header-top-right-4">
-							<!--<div class="dropdown header-left-menu">
-								  <button class="btn btn-default header-left-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<img src="img/eng/1.jpg" alt="" /> English 1 <i class="fa fa-angle-down"></i>
-								  </button>
-								  <ul class="dropdown-menu">
-									  <li><a href="#"><img src="img/eng/2.jpg" alt="" /> English 1</a></li>
-									  <li><a href="#"><img src="img/eng/3.jpg" alt="" /> English 2</a></li>
-									  <li><a href="#"><img src="img/eng/1.jpg" alt="" /> English 3</a></li>
-								  </ul>
-							</div>-->
-							<!--<div class="dropdown header-left-menu">
-								<button class="btn btn-default header-left-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								GBP  <i class="fa fa-angle-down"></i>
-								</button>
-								 <ul class="dropdown-menu">
-									<li><a href="#"> EUR - Euro</a></li>
-									<li><a href="#"> USD - US Dollar</a></li>
-								</ul>
-							</div>-->
+							
 							<div class="header-top-left">
 								<ul>
                                 <li class="click_menu"><a href="#">My Account <i class="fa fa-angle-down"></i></a>
@@ -189,22 +171,7 @@
 												<a href="#">ACCESSORIES</a>
 												
 											</span>
-											<!--<span>
-												<a href="#" class="megatitle">Nightstands</a>
-												<a href="#">Brown Finish</a>
-												<a href="#">Distressed</a>
-												<a href="#">Cherry Finish</a>
-												<a href="#">Weathered</a>
-												<a href="#">Laundry</a>
-											</span>
-											<span>
-												<a href="#" class="megatitle">Headboards</a>
-												<a href="#">Upholstered</a>
-												<a href="#">Tufted</a>
-												<a href="#">Storage</a>
-												<a href="#">padded</a>
-												<a href="#">Outdoor</a>
-											</span>-->
+										
 										</div>
 									</li>
 									<li><a href="shop.html">Workstation Furnitures</a>
@@ -300,9 +267,6 @@
 									<li class="active"><a href="index.html">Home</a>
 										<ul>
 											<li><a href="index.html">home version 1</a></li>
-											<li><a href="index-2.html">home version 2</a></li>
-											<li><a href="index-3.html">home version 3</a></li>
-											<li><a href="index-4.html">home version 4</a></li>
 										</ul>
 									</li>
 									<li><a href="shop.html">Bedroom</a>
@@ -474,7 +438,7 @@
 										<label for="exampleInputPassword2">Confirm Password <span>*</span></label>
 										<input type="Password" class="form-control" id="exampleInputPassword2" name="confirm_password" required>
 									</div>
-									<button type="submit" class="btn btn-default login-btn">Create an Account</button>
+									<button type="submit"  onclick="submitHandler" class="btn btn-default login-btn">Create an Account</button>
 								</form>						
 							</div>
 							<a href="#" class="back">back</a>
@@ -512,7 +476,7 @@
 							<form method="POST" id="subscribe">
 								{% csrf_token %}
 								<input type="email" id="emailSub" placeholder="Enter your email address"/>
-								<button type="submit"><span class="lnr lnr-envelope"></span></button>
+								<button type="submit" onclick="subscriberForm"><span class="lnr lnr-envelope"></span></button>
 							</form>
 						</div>
 					</div>
@@ -704,7 +668,7 @@ function submitHandler(e){
 			method: 'POST',
 			body: formData
 		})
-		.then(response => response)
+		.then(response => response.json())
 		.then(data => {
 			alert('Success! click on the login botton to continue')
 		})
@@ -719,9 +683,9 @@ function submitHandler(e){
 
 
 const subscriber =  document.getElementById("subscribe")
-subscriber.addEventListener("submit", submitHandler);
+subscriber.addEventListener("submit", subscriberForm);
        
-function submitHandler(e){
+function subscriberForm(e){
 		e.preventDefault();
 
 		email = document.getElementById("emailSub").value

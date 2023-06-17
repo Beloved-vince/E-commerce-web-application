@@ -52,25 +52,7 @@
 							</div>
 						</div>					
 						<div class="col-lg-9 col-md-8 col-sm-7 header-top-right-4">
-							<!--<div class="dropdown header-left-menu">
-								  <button class="btn btn-default header-left-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<img src="img/eng/1.jpg" alt="" /> English 1 <i class="fa fa-angle-down"></i>
-								  </button>
-								  <ul class="dropdown-menu">
-									  <li><a href="#"><img src="img/eng/2.jpg" alt="" /> English 1</a></li>
-									  <li><a href="#"><img src="img/eng/3.jpg" alt="" /> English 2</a></li>
-									  <li><a href="#"><img src="img/eng/1.jpg" alt="" /> English 3</a></li>
-								  </ul>
-							</div>-->
-							<!--<div class="dropdown header-left-menu">
-								<button class="btn btn-default header-left-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								GBP  <i class="fa fa-angle-down"></i>
-								</button>
-								 <ul class="dropdown-menu">
-									<li><a href="#"> EUR - Euro</a></li>
-									<li><a href="#"> USD - US Dollar</a></li>
-								</ul>
-							</div>-->
+						
 							<div class="header-top-left">
 								<ul>
                                 <li class="click_menu"><a href="#">My Account <i class="fa fa-angle-down"></i></a>
@@ -184,23 +166,7 @@
 												<a href="#">ACCESSORIES</a>
 												
 											</span>
-											<!--<span>
-												<a href="#" class="megatitle">Nightstands</a>
-												<a href="#">Brown Finish</a>
-												<a href="#">Distressed</a>
-												<a href="#">Cherry Finish</a>
-												<a href="#">Weathered</a>
-												<a href="#">Laundry</a>
-											</span>
-											<span>
-												<a href="#" class="megatitle">Headboards</a>
-												<a href="#">Upholstered</a>
-												<a href="#">Tufted</a>
-												<a href="#">Storage</a>
-												<a href="#">padded</a>
-												<a href="#">Outdoor</a>
-											</span>-->
-										</div>
+											
 									</li>
 									<li><a href="shop.html">Workstation Furnitures</a>
 										<div class="megamenu megamenu2 living-megamenu">
@@ -469,22 +435,35 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="product-thumbnail"><a href="#"><img src="img/wishlist/1.jpg" alt="" /></a></td>
-											<td class="product-name"><a href="#">Vestibulum suscipit</a></td>
-											<td class="product-price"><span class="amount">$165.00</span></td>
-											<td class="product-quantity"><input type="number" value="1" /></td>
-											<td class="product-subtotal">$165.00</td>
-											<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-										</tr>
-										<tr>
+										{% for item in cart_data %}
+											<tr>
+												<td class="product-thumbnail">
+													<a href="#"><img src="{{ item.image }}" alt="" /></a>
+												</td>
+												<td class="product-name">
+													<a href="#">{{ item.name }}</a>
+												</td>
+												<td class="product-price">
+													<span class="amount">${{ item.price }}</span>
+												</td>
+												<td class="product-quantity">
+													<input type="number" value="{{ item.quantity }}" />
+												</td>
+												<td class="product-subtotal">${{ item.subtotal }}</td>
+												<td class="product-remove">
+													<a href="#"><i class="fa fa-times"></i></a>
+												</td>
+											</tr>
+											{% endfor %}
+
+										<!-- <tr>
 											<td class="product-thumbnail"><a href="#"><img src="img/wishlist/2.jpg" alt="" /></a></td>
 											<td class="product-name"><a href="#">Vestibulum dictum magna</a></td>
 											<td class="product-price"><span class="amount">$50.00</span></td>
 											<td class="product-quantity"><input type="number" value="1" /></td>
 											<td class="product-subtotal">$50.00</td>
 											<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-										</tr>
+										</tr> -->
 									</tbody>
 								</table>
 							</div>
