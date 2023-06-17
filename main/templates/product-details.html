@@ -1022,7 +1022,7 @@
         <script src="{% static 'js/plugins.js' %}"></script>
 		<!-- main js -->
         <script src="{% static 'js/main.js' %}"></script>
-		<!-- <script>
+		<script>
 		const addToCartForm = document.querySelector('.cart');
 		
 		addToCartForm.addEventListener('submit', (event) => {
@@ -1042,18 +1042,16 @@
 				'X-CSRFToken': '{{ csrf_token }}'
 			}
 			})
-			.then(response => {
-				if (response.ok) {
-				alert('Item added to cart successfully!');
-				} else {
-				alert('Failed to add item to cart.');
-				}
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
+			.then(response => response.json())
+        .then(data => {
+            alert('Success! click on the login botton to continue')
+        })
+        // .catch(error => {
+        //     console.error('Error', error);
+        // });
+                return true;
 		});
-		</script> -->
+		</script>
 		  
 	    </body>
 </html>
