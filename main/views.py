@@ -3,9 +3,10 @@ from rest_framework.decorators import api_view
 from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Subscription,  Product, Cart, CartItem
-from django import forms
+from .models import Subscription,  Product, Cart, CartItem, User
 from cart.forms import AddToCartForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.backends import ModelBackend
 
 
 User = get_user_model()
@@ -115,3 +116,50 @@ def post(request):
                 return HttpResponse("Success")
     
     return render(request, 'product-details.html', {'form': form})
+
+
+
+
+
+class EmailBackend(ModelBackend):
+    def authenticate(self, request, email=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return None
+
+        if user.check_password(password):
+            return user
+
+        return None
+
+def login_view(request):
+    """Login view checks if input data is authenticated,
+    allows login if true, else does nothing.
+    """
+
+    if request.method == 'POST':
+        try:
+            email = request.POST['email']
+            password = request.POST['password']
+            user = EmailBackend().authenticate(request, email=email, password=password)
+            print(f"{email}  {password}")
+            if user is not None:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                print("Success")
+                return redirect('add_cart')
+            else:
+                print("Anonymous login failed")
+                messages.error(request, 'Username or password is incorrect')
+        except User.DoesNotExist:
+            print("User does not exist")
+            messages.error(request, 'Username or password is incorrect')
+
+    return render(request, 'customer-login.html')
+
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login-in')
