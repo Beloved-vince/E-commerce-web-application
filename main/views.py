@@ -67,7 +67,9 @@ def shop(request):
 
 @api_view(["GET", "POST"])
 def details(request, product_id):
-    
-    product = get_object_or_404(Product, id=product_id)
-    image_url = product.image.url
-    return render(request, 'product-details.html', {'image_url': image_url})
+    if request.method == "GET":
+        product = get_object_or_404(Product, id=product_id)
+        image_url = product.image.url
+        return render(request, 'product-details.html', {'image_url': image_url})
+    else:
+        return redirect('add_to_cart')
