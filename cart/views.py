@@ -79,7 +79,7 @@ class CartView(View):
                     cart_item.save()
                 except CartItem.DoesNotExist:
                     cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)# else:
-                    cart_id = request.session.get('cart_id')
+                    cart_id = request.session.get('cart_id', None)
                     if not cart_id:
                         cart = Cart.objects.create()
                         cart_id = cart.id

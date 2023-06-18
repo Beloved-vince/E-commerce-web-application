@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from cart.views import CartView
 
+
 urlpatterns = [
 ]
 urlpatterns = [
@@ -11,7 +12,8 @@ urlpatterns = [
     path('sign-up/', views.signup, name="sign-up"),
     path('subscribe', views.subscribe, name="news-letter"),
     path('shop/', views.shop, name='shop'),
-    path('item/<str:product_id>.html', views.details, name='carting'),    path('add-to-cart/', CartView.as_view(), name='add_to_cart'),
-    path('add-to-cart/', CartView.as_view(), name='add_to_cart'),
+    path('<str:product_id>.html', views.details, name='carting'),    path('add-to-cart/', CartView.as_view(), name='add_to_cart'),
+    path('view-cart-items/', CartView.as_view(), name='view_items'),
+    path("add-cart/", views.post, name='add_cart')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

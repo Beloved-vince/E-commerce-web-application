@@ -491,7 +491,7 @@
 										</div>
 											<h4>Rs33.00</h4>
 											
-											<form method="post" class="cart">
+											<form method="POST" class="cart">
 												{% csrf_token %}
 												<div class="quick-add-to-cart">
 													<div class="numbers-row">
@@ -503,7 +503,7 @@
 												<br/>
 												<div class="quick-add-to-cart">
 													<button class="btn btn-lg btn-success" type="submit"><span class="lnr lnr-cart"></span>Add to Cart</button>
-													<button data-toggle="modal" data-target="#myModal" class="single_add_to_cart_button hyper-page" type="button"><span class="lnr lnr-cart"></span>Bulk Order</button>
+													<!-- <button data-toggle="modal" data-target="#myModal" class="single_add_to_cart_button hyper-page" type="button"><span class="lnr lnr-cart"></span>Bulk Order</button> -->
 												</div>
 											</form>
 											
@@ -1035,7 +1035,7 @@
 			  formData.append('product_id', '2.html');
 			  formData.append('quantity', qty);
 		  
-			  fetch('cart/add-to-cart/', {
+			  fetch('add-cart/', {
 				method: 'POST',
 				body: formData,
 				headers: {
