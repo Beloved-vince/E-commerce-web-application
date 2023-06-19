@@ -494,16 +494,15 @@
 											<form method="POST" class="cart">
 												{% csrf_token %}
 												<div class="quick-add-to-cart">
-													<div class="numbers-row">
-														<label for="french-hens">Qty:</label>
-														<input type="number" id="french-hens" name="quantity" value="3">
-													</div>
+												  <div class="numbers-row">
+													<label for="french-hens">Qty:</label>
+													<input type="number" id="french-hens" name="quantity" value="3">
+												  </div>
 												</div>
 												<br/>
 												<br/>
 												<div class="quick-add-to-cart">
-													<button class="btn btn-lg btn-success" type="submit"><span class="lnr lnr-cart"></span>Add to Cart</button>
-													<!-- <button data-toggle="modal" data-target="#myModal" class="single_add_to_cart_button hyper-page" type="button"><span class="lnr lnr-cart"></span>Bulk Order</button> -->
+												  <button class="btn btn-lg btn-success" type="button" onclick="increaseQuantityAndSend()">Add to Cart</button>
 												</div>
 											</form>
 											
@@ -1023,37 +1022,54 @@
 		<!-- main js -->
         <script src="{% static 'js/main.js' %}"></script>
 		<script>
-			const addToCartForm = document.querySelector('.cart');
+			function increaseQuantityAndSend() {
+			  // Get the product ID from the URL
+			  const urlParams = new URLSearchParams(window.location.search);
+			  const productId = urlParams.get('product_id');
 		  
-			addToCartForm.addEventListener('submit', (event) => {
-			  event.preventDefault();
+			  // Get the current quantity value
+			  const quantityInput = document.getElementById('french-hens');
+			  let currentQuantity = parseInt(quantityInput.value);
 		  
-			  const qtyInput = document.querySelector('#french-hens');
-			  const qty = qtyInput.value;
+			  // Increase the quantity (e.g., by 1)
+			  currentQuantity++;
 		  
-			  const formData = new FormData();
-			  formData.append('product_id', '2.html');
-			  formData.append('quantity', qty);
+			  // Prepare the data to be sent in the POST request
+			  const data = {
+				product_id: productId,
+				quantity: currentQuantity
+			  };
 		  
+			  // Send the POST request
 			  fetch('add-cart/', {
 				method: 'POST',
-				body: formData,
 				headers: {
-				  'X-CSRFToken': '{{ csrf_token }}'
+				  'Content-Type': 'application/json',
+				  'X-CSRFToken': getCSRFToken() // Include the CSRF token if required by your backend
+				},
+				body: JSON.stringify(data)
+			  })
+			  .then(response => {
+				if (response) {
+					print(response)
+				  console.log('Quantity increased and sent to the database.');
+				} else {
+				  console.error('Failed to send quantity to the database.');
 				}
 			  })
-				.then(response => response.text())
-				.then(data => {
-				  if (data === 'Success') {
-					alert('Item added to cart successfully!');
-				  } else {
-					alert('Failed to add item to cart.');
-				  }
-				})
-				.catch(error => {
-				  console.error('Error:', error);
-				});
-			});
+			  .catch(error => {
+				console.error('An error occurred:', error);
+			  });
+			}
+		  
+			// Function to get the CSRF token value
+			function getCSRFToken() {
+			  const cookieValue = document.cookie
+				.split('; ')
+				.find(cookie => cookie.startsWith('csrftoken='))
+				.split('=')[1];
+			  return cookieValue;
+			}
 		  </script>
 		  
 		  

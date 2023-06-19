@@ -79,48 +79,59 @@ def details(request, product_id):
         return redirect('add_cart')
 
 
+from django.http import JsonResponse
+
 def post(request):
     """
-    Adding cart items to the browser session for un-authenticated user
+    Adding cart items to the browser session for unauthenticated user
     Or storing it to the database for authenticated user
     """
-    form = AddToCartForm(request.POST)
-    if request.user.is_authenticated:
-        if form.is_valid():
-            item_id = form.cleaned_data['product_id']
-            quantity = form.cleaned_data['quantity']
-            print(f"{quantity},  {item_id}")
-        
-            try:
-                cart = Cart.objects.get(user=request.user)
-                print(cart)
-            except Cart.DoesNotExist:
-                cart = Cart.objects.create(user=request.user)
-            
-            # Check if a CartItem with the same product_id already exists in the cart
-            try:
-                cart_item = CartItem.objects.get(cart=cart, product_id=item_id)
-                cart_item.quantity += quantity
-                cart_item.save()
-            except CartItem.DoesNotExist:
-                cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)# else:
-                cart_id = request.session.get('cart_id')
-                if not cart_id:
-                    cart = Cart.objects.create()
-                    cart_id = cart.id
-                    request.session['cart_id'] = cart_id
+    try:
+        if request.method == 'POST':
+            form = AddToCartForm(request.POST)
+            print(form.errors)
+            if form.is_valid():
+                product_id = form.cleaned_data['product_id']
+                quantity = form.cleaned_data['quantity']
+                if request.user.is_authenticated:
+                    try:
+                        cart = Cart.objects.get(user=request.user)
+                    except Cart.DoesNotExist:
+                        cart = Cart.objects.create(user=request.user)
+                    
+                    # Check if a CartItem with the same product_id already exists in the cart
+                    try:
+                        cart_item = CartItem.objects.get(cart=cart, product_id=product_id)
+                        cart_item.quantity += quantity
+                        cart_item.save()
+                    except CartItem.DoesNotExist:
+                        cart_item = CartItem.objects.create(cart=cart, product_id=product_id, quantity=quantity)
+                    
+                    return JsonResponse({'message': 'Quantity is it true increased and sent to the database.'})
                 else:
-                    cart = Cart.objects.get(id=cart_id)
-                cart_item = CartItem.objects.create(cart=cart, product_id=item_id, quantity=quantity)
-            
-                return HttpResponse("Success")
+                    return JsonResponse
+                #     # For unauthenticated users, store the cart items in the session
+                #     cart_id = request.session.get('cart_id')
+                #     if not cart_id:
+                #         cart = Cart.objects.create()
+                #         cart_id = cart.id
+                #         request.session['cart_id'] = cart_id
+                #     else:
+                #         cart = Cart.objects.get(id=cart_id)
+                    
+                #     cart_item = CartItem.objects.create(cart=cart, product_id=product_id, quantity=quantity)
+                    
+                #     return JsonResponse({'message': 'Success'})
     
-    return render(request, 'product-details.html', {'form': form})
+    except Exception as e:
+        return(e)
+        # return JsonResponse({'message': 'Error occurred'}, status=500)
+    
+    return JsonResponse({'message': 'Invalid request'}, status=400)
 
 
 
 
-from .models import User
 
 def login_view(request):
     """Login view checks if input data is authenticated,
