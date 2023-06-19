@@ -2,7 +2,7 @@ from typing import Any
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
 from main.models import Cart, CartItem
-from .forms import AddToCartForm
+from .forms import CartItemForm, CartForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 # Create your views here.

@@ -1,6 +1,12 @@
 from django import forms
+from main.models import Cart, CartItem
 
-class AddToCartForm(forms.Form):
-    item_id = forms.IntegerField(widget=forms.HiddenInput())
-    quantity = forms.IntegerField(min_value=1, initial=1)
-    
+class CartForm(forms.ModelForm):
+    class Meta:
+        model = Cart
+        fields = []  # No additional fields needed for the Cart model
+
+class CartItemForm(forms.ModelForm):
+    class Meta:
+        model = CartItem
+        fields = ['quantity']  # Specify the fields you want to include in the form
