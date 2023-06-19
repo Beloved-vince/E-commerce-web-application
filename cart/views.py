@@ -1,11 +1,10 @@
 from typing import Any
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
-from main.models import Cart, CartItem, User
+from main.models import Cart, CartItem
 from .forms import AddToCartForm
 from django.contrib.auth.decorators import login_required
-from main.models import User
-
+from django.contrib.auth.models import User
 # Create your views here.
 
 class CartView(View):

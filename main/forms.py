@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import User, Subscription
+from .models import Subscription
 
 
 class SignUpForm(forms.ModelForm):

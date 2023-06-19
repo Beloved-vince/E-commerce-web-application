@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view
 from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Subscription,  Product, Cart, CartItem, User
+from .models import Subscription,  Product, Cart, CartItem
 from cart.forms import AddToCartForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.backends import ModelBackend
 
 
@@ -120,18 +120,7 @@ def post(request):
 
 
 
-
-class EmailBackend(ModelBackend):
-    def authenticate(self, request, email=None, password=None, **kwargs):
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return None
-
-        if user.check_password(password):
-            return user
-
-        return None
+from .models import User
 
 def login_view(request):
     """Login view checks if input data is authenticated,
@@ -142,11 +131,13 @@ def login_view(request):
         try:
             email = request.POST['email']
             password = request.POST['password']
-            user = EmailBackend().authenticate(request, email=email, password=password)
-            print(f"{email}  {password}")
-            if user is not None:
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                print("Success")
+            user = User.objects.get(email=email)
+
+            # Authenticate the user explicitly
+            authenticated_user = authenticate(request, username=email, password=password)
+
+            if authenticated_user is not None:
+                login(request, authenticated_user)
                 return redirect('add_cart')
             else:
                 print("Anonymous login failed")
@@ -156,6 +147,7 @@ def login_view(request):
             messages.error(request, 'Username or password is incorrect')
 
     return render(request, 'customer-login.html')
+
 
 
 
