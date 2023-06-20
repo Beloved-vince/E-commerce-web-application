@@ -168,7 +168,13 @@ def cart_view(request):
 
 
 
-
+def wishlist_view(request):
+    wishlist = Wishlist.objects.filter(user=request.user)
+    
+    return render(request, 'wishlist.html')
+    pass
+    
+    
 def login_view(request):
     """
     Login view checks if input data is authenticated,
