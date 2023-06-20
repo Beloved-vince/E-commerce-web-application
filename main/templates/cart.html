@@ -436,25 +436,26 @@
 									</thead>
 									<tbody>
 										{% for item in cart_data %}
-											<tr>
-												<td class="product-thumbnail">
-													<a href="#"><img src="{{ item.image }}" alt="" /></a>
-												</td>
-												<td class="product-name">
-													<a href="#">{{ item.name }}</a>
-												</td>
-												<td class="product-price">
-													<span class="amount">${{ item.price }}</span>
-												</td>
-												<td class="product-quantity">
-													<input type="number" value="{{ item.quantity }}" />
-												</td>
-												<td class="product-subtotal">${{ item.subtotal }}</td>
-												<td class="product-remove">
-													<a href="#"><i class="fa fa-times"></i></a>
-												</td>
-											</tr>
-											{% endfor %}
+										<tr>
+											<td class="product-thumbnail">
+												<a href="#"><img src="{{ item.product.image.url }}" alt="" /></a>  <!-- Assuming the image URL is stored in a "product" field -->
+											</td>
+											<td class="product-name">
+												<a href="#">{{ item.product.name }}</a>  <!-- Assuming the product name is stored in a "name" field -->
+											</td>
+											<td class="product-price">
+												<span class="amount">${{ item.product.price }}</span>  <!-- Assuming the product price is stored in a "price" field -->
+											</td>
+											<td class="product-quantity">
+												<input type="number" value="{{ item.quantity }}" />
+											</td>
+											<td class="product-subtotal">${{ item.subtotal }}</td> <!-- Calculating the subtotal by multiplying quantity and price -->
+											<td class="product-remove">
+												<a href="#"><i class="fa fa-times"></i></a>
+											</td>
+										</tr>
+									{% endfor %}
+
 
 										<!-- <tr>
 											<td class="product-thumbnail"><a href="#"><img src="img/wishlist/2.jpg" alt="" /></a></td>
@@ -680,6 +681,45 @@
         <script src="{% static 'js/plugins.js' %}"></script>
 		<!-- main js -->
         <script src="{% static 'js/main.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+		<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.cart');
+  const quantityInput = document.getElementById('french-hens');
+  const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const quantity = quantityInput.value;
+
+    // Create a new FormData object and append the quantity and CSRF token
+    const formData = new FormData();
+    formData.append('quantity', quantity);
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    // Send the form data to the server using fetch API
+    fetch('', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response from the server
+      console.log(data);
+	  alert("Item added to cart")
+    })
+    .catch(error => {
+      // Handle any error that occurred during the request
+      console.error(error);
+    });
+  });
+});
+
+</script>	
 	    </body>
 </html>
 {% endblock %}
