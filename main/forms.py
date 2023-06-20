@@ -41,10 +41,17 @@ class SignUpForm(forms.ModelForm):
             return user
 
 
-from django import forms
 from .models import Subscription
 
 class SubscriptionForm(forms.ModelForm):
     class Meta:
         model = Subscription
         fields = ['email']
+
+
+from .models import Wishlist
+
+class WishlistForm(forms.ModelForm):
+    class Meta:
+        model = Wishlist
+        fields = []  # Add any additional fields that might be include in the form

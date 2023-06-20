@@ -82,6 +82,9 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
 def post(request, product_id):
+    """
+    Saving cart items to the database
+    """
     product = get_object_or_404(Product, id=product_id)
     image_url = product.image.url
 
@@ -129,6 +132,33 @@ def post(request, product_id):
 
 
 
+from django.shortcuts import render, redirect
+from .models import Wishlist
+from .forms import WishlistForm
+
+def create_wishlist(request):
+    """Wish list function"""
+    
+    if request.method == 'POST':
+        form = WishlistForm(request.POST)
+        
+        if form.is_valid():
+            wishlist = form.save(commit=False)
+            wishlist.user = request.user  # Assuming the user is authenticated
+            wishlist.save()
+            form.save_m2m()  # Save the many-to-many relationship
+            return redirect('wishlist_view')  # Redirect to the wishlist view
+    else:
+        form = WishlistForm()
+    
+    context = {
+        'form': form
+    }
+
+    return JsonResponse({'message': "message"}, status=400)
+
+
+
 def login_view(request):
     """Login view checks if input data is authenticated,
     allows login if true, else does nothing.
@@ -154,9 +184,6 @@ def login_view(request):
             messages.error(request, 'Username or password is incorrect')
 
     return render(request, 'customer-login.html')
-
-
-
 
 
 def logout_view(request):

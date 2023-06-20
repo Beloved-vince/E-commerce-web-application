@@ -573,8 +573,9 @@
 													</a>
 													<div class="new-product-action">
 														<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-														<a href="#"><span class="lnr lnr-cart cart_pad"></span>Add to Cart</a>
-														<a href="#"><span class="lnr lnr-heart"></span></a>
+														<a href="{% url 'add_cart' product_id=product.id %}"><span class="lnr lnr-cart cart_pad"></span>Add to Cart</a>
+														<a href="#" class="add-to-wishlist" data-product-id="{{ product.id }}"><span class="lnr lnr-heart"></span></a>
+
 													</div>
 													{% if product.discounted_price != product.price %}
 													<span class="new">{{ product.discount }}</span>
@@ -784,6 +785,54 @@
         <script src="{% static 'js/plugins.js' %}"></script>
 		<!-- main js -->
         <script src="{% static 'js/main.js' %}"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+		$(document).ready(function() {
+		// Get the CSRF token from the cookies
+		var csrftoken = getCookie('csrftoken');
+
+		function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+			var cookies = document.cookie.split(';');
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = cookies[i].trim();
+				if (cookie.substring(0, name.length + 1) === (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+				}
+			}
+			}
+			return cookieValue;
+		}
+
+		$('.add-to-wishlist').click(function(e) {
+			e.preventDefault();
+
+			var productId = $(this).data('product-id');
+			var url = 'wish-list/';  // Replace with your actual URL for adding to wishlist
+
+			$.ajax({
+			type: 'POST',
+			url: url,
+			headers: {
+				'X-CSRFToken': csrftoken  // Set the CSRF token in the request headers
+			},
+			data: {
+				'product_id': productId
+			},
+			success: function(response) {
+				console.log('Product added to wishlist successfully');
+			},
+			error: function(xhr, status, error) {
+				console.error('Error adding product to wishlist:', error);
+			}
+			});
+		});
+		});
+
+		</script>
+
     </body>
 </html>
 {% endblock %}
