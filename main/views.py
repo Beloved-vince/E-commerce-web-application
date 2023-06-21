@@ -192,9 +192,6 @@ def capture_user_feedback(request):
     return render(request, 'contact.html')
 
     
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
 
 def login_view(request):
     if request.method == 'POST':
@@ -209,6 +206,7 @@ def login_view(request):
         else:
             print("error")
             messages.error(request, 'Invalid email or password')
+            return JsonResponse({"message": "Invalid email or password"})
 
     return render(request, 'customer-login.html')
 
