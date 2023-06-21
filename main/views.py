@@ -9,6 +9,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
 from .models import Wishlist
+from django.http import JsonResponse
+
 
 User = get_user_model()
 
@@ -77,10 +79,7 @@ def details(request, product_id):
     #     return redirect('add_cart')
 
 
-from django.http import JsonResponse
 
-
-from django.shortcuts import get_object_or_404
 
 def post(request, product_id):
     """
@@ -169,11 +168,29 @@ def cart_view(request):
 
 
 def wishlist_view(request):
+    """Return user wishlist"""
     wishlist = Wishlist.objects.filter(user=request.user)
+    context = {
+        "wishlist": wishlist
+    }
     
-    return render(request, 'wishlist.html')
-    pass
-    
+    return render(request, 'wishlist.html', context)
+
+from .models import UserFeedback
+
+def capture_user_feedback(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        feedback_text = request.POST.get('feedback_text')
+        
+        feedback = UserFeedback(email=email, name=name, phone_number=phone_number, feedback_text=feedback_text)
+        feedback.save()
+        messages.success(request, "Thank you for your feedback")
+    # Render the feedback form template for the user to provide feedback
+    return render(request, 'contact.html')
+
     
 def login_view(request):
     """
