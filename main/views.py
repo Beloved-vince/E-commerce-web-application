@@ -200,8 +200,8 @@ def login_view(request):
 
     if request.method == 'POST':
         try:
-            email = request.POST['email']
-            password = request.POST['password']
+            email = request.POST.get('email')
+            password = request.POST.get('password')
             user = User.objects.get(email=email)
 
             # Authenticate the user explicitly
@@ -210,13 +210,10 @@ def login_view(request):
             if authenticated_user is not None:
                 login(request, authenticated_user)
                 return redirect('add_cart')
-            else:
-                print("Anonymous login failed")
-                messages.error(request, 'Username or password is incorrect')
         except User.DoesNotExist:
             print("User does not exist")
             messages.error(request, 'Username or password is incorrect')
-
+            return JsonResponse({"message": "Incorrect email and password"})
     return render(request, 'customer-login.html')
 
 

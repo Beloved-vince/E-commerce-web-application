@@ -447,7 +447,7 @@
 								<span>If you have an account, sign in with your email address.</span>
 							</div>
 							<div class="login-form">
-								<form method="POST">
+								<form method="POST" id="login-area">
 									{% csrf_token %}							
 									<div class="form-group login-page">
 										<label for="exampleInputEmail1">Email <span>*</span></label>
@@ -626,6 +626,39 @@
         <script src="{% static 'js/plugins.js' %}"></script>
 		<!-- main js -->
         <script src="{% static 'js/main.js' %}"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('login-area'); // Replace 'myForm' with the ID of your form
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var email = document.getElementById('exampleInputEmail1').value;
+    var password = document.getElementById('exampleInputPassword1').value;
+
+    var data = {
+      email: email,
+      password: password
+    };
+
+    fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}' // Replace '{{ csrf_token }}' with the actual CSRF token value from your Django template
+      },
+      body: JSON.stringify(data)
+    })
+    .then(function(response) {
+    })
+    
+    .catch(function(error) {
+      // Handle any network or other errors
+      console.error('An error occurred:', error);
+    });
+  });
+});
+		</script>
 	    </body>
 </html>
 {% endblock %}
