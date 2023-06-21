@@ -192,28 +192,24 @@ def capture_user_feedback(request):
     return render(request, 'contact.html')
 
     
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
 def login_view(request):
-    """
-    Login view checks if input data is authenticated,
-    allows login if true, else does nothing.
-    """
-
     if request.method == 'POST':
-        try:
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            user = User.objects.get(email=email)
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(email + password)
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            print("success")
+            login(request, user)
+            return redirect('cart_view')  # Replace 'home' with the name of your home page URL
+        else:
+            print("error")
+            messages.error(request, 'Invalid email or password')
 
-            # Authenticate the user explicitly
-            authenticated_user = authenticate(request, username=email, password=password)
-
-            if authenticated_user is not None:
-                login(request, authenticated_user)
-                return redirect('add_cart')
-        except User.DoesNotExist:
-            print("User does not exist")
-            messages.error(request, 'Username or password is incorrect')
-            return JsonResponse({"message": "Incorrect email and password"})
     return render(request, 'customer-login.html')
 
 
