@@ -240,17 +240,13 @@ def update_profile(request):
     # Render the profile update form
     return render(request, 'user_accountpage.html')
 
-@login_required
 def change_password(request):
     user = request.user
     if request.method == "POST":
-        old_password = request.POST.get("old_password")
         new_password = request.POST.get("new_password")
         confirm_password = request.POST.get("confirm_password")
         
-        if old_password != user.password:
-            messages.error(request, "Incorrect old password")
-        elif new_password != confirm_password:
+        if new_password != confirm_password:
             messages.error(request, "Password do not match")
         else:
             user.set_password(new_password)
