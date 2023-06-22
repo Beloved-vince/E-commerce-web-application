@@ -543,35 +543,36 @@
              <div class="col-md-12 col-sm-12">
              
              <h4 class="profile_addresstab">Enter New Address Here</h4>
-             <form action="" method="POST" id="address_form">
+             <form action="{% url 'address_list' %}" method="POST" id="address_form">
+				{% csrf_token %}
              <div class="col-md-6">
 							<div class="checkout-form-list">
 								<label>City <span class="required">*</span></label>										
-								<input type="text" placeholder="" />
+								<input type="text" placeholder="" name="city"/>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="checkout-form-list">
 								<label>State <span class="required">*</span></label>										
-								<input type="text" placeholder="" />
+								<input type="text" placeholder="" name="state"/>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="checkout-form-list">
 								<label>Country <span class="required">*</span></label>										
-								<input type="text" placeholder="" />
+								<input type="text" placeholder="" name="country"/>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="checkout-form-list">
 								<label>Address <span class="required">*</span></label>										
-								<input type="text" placeholder="" />
+								<input type="text" placeholder="" name="address"/>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="checkout-form-list">
 								<label>Postal code <span class="required">*</span></label>
-								<input type="text" placeholder="Street address" />
+								<input type="number" placeholder="Street address" name="postal_code"/>
 							</div>
 						</div>
 						<button type="submit" class="btn btn-default login-btn">Submit</button>

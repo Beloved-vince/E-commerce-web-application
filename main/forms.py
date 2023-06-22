@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Subscription
+from .models import Subscription, Wishlist, Address
 
 
 class SignUpForm(forms.ModelForm):
@@ -41,17 +41,24 @@ class SignUpForm(forms.ModelForm):
             return user
 
 
-from .models import Subscription
-
 class SubscriptionForm(forms.ModelForm):
     class Meta:
         model = Subscription
         fields = ['email']
 
 
-from .models import Wishlist
-
 class WishlistForm(forms.ModelForm):
     class Meta:
         model = Wishlist
         fields = []  # Add any additional fields that might be include in the form
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Perform additional validation or security checks here
+        return cleaned_data

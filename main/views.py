@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from rest_framework.decorators import api_view
-from .forms import SignUpForm, SubscriptionForm
+from .forms import SignUpForm, SubscriptionForm, AddressForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from .models import Subscription,  Product, Cart, CartItem
@@ -9,7 +9,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
 from .models import Wishlist
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -254,3 +254,21 @@ def change_password(request):
             messages.success(request, "Password change successfully")
 
     return render(request, "user_accountpage.html")
+
+
+
+@login_required
+def create_address(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            return redirect('address_list')  # Redirect to a success page or another view
+    else:
+        form = AddressForm()
+    return render(request, 'user_accountpage.html', {'form': form})
+
+    
