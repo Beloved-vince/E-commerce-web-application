@@ -155,7 +155,7 @@
 											</span>
 											<span>
 												<a href="#" class="megatitle">BEER, WINE & SPIRITS</a>
-												<a href="#">Upholstered</a>
+												<a href="#">Alcohol</a>
 												<a href="#">Tufted</a>
 											</span>
 										</div>
@@ -182,11 +182,7 @@
 									</li>
 									<li><a href="{% url 'health' %}">Health & Beauty</a>
 										<div class="megamenu megamenu2 living-megamenu">
-											<span>
-												<a href="#" class="megatitle">Living Chairs</a>
-												<a href="#">mattress</a>
-												<a href="#">bunk bed</a>
-											</span>
+											
 											<span>
 												<a href="#" class="megatitle">MAKE UP</a>
 												<a href="#">Brown Finish</a>
@@ -445,105 +441,149 @@
 						<div class="mobile-menu">
 							<nav id="mobile-menu">
 								<ul>
-									<li class="active"><a href="index.html">Home</a>
+									<li class="active"><a href="{% url 'home' %}">Home</a>
 									</li>
-									<li><a href="shop.html">Bedroom</a>
+									<li><a href="{% url 'shop' %}">Supermarket</a>
 										<ul>
-											<li><a href="#">Beds</a>
+											<li><a href="#">Food</a>
 												<ul>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Storage Beds</a></li>
-													<li><a href="#">Regular Beds</a></li>
-													<li><a href="#">Sleigh Beds</a></li>
-													<li><a href="#">modern beds</a></li>
+													<li><a href="#">Fast food</a></li>
+													<li><a href="#">Drinks</a></li>
 												</ul>
 											</li>
-											<li><a href="#">Nightstands</a>
+											<li><a href="#">BEVERAGES</a>
 												<ul>
-													<li><a href="#">Brown Finish</a></li>
-													<li><a href="#">Distressed</a></li>
-													<li><a href="#">Cherry Finish</a></li>
+													<li><a href="#">Milk</a></li>
+													<li><a href="#">Cream</a></li>
+												</ul>
+											</li>
+											<li><a href="#">BEER, WINE & SPIRITS</a>
+												<ul>
+													<li><a href="#">Alcohol</a></li>
+													<li><a href="#">Tufted</a></li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li><a href="{% url 'indoor' %}">Home & Office</a>
+										<ul>
+											<li><a href="#">HOME & KITCHEN</a>
+												<ul>
+													<li><a href="#">Home Furnitures</a></li>
+                                                    <li><a href="#">wall arts</a></li>
+												</ul>
+											</li>
+											<li><a href="#">OFFICE PRODUCTS</a>
+												<ul>
 													<li><a href="#">Weathered</a></li>
 													<li><a href="#">Laundry</a></li>
 												</ul>
 											</li>
-											<li><a href="#">Headboards</a>
+											<li><a href="#">HOME & OFFICE FURNITURE</a>
 												<ul>
 													<li><a href="#">Upholstered</a></li>
-													<li><a href="#">Tufted</a></li>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Platform Beds</a></li>
 													<li><a href="#">Platform Beds</a></li>
 												</ul>
 											</li>
 										</ul>
 									</li>
-									<li><a href="shop.html">Living Room	</a>
+									<li><a href="{% url 'health' %}">Health & Beauty</a>
 										<ul>
-											<li><a href="#">Beds</a>
+											<li><a href="#">MAKE UP</a>
 												<ul>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Storage Beds</a></li>
-													<li><a href="#">Regular Beds</a></li>
-													<li><a href="#">Sleigh Beds</a></li>
-													<li><a href="#">modern beds</a></li>
-												</ul>
-											</li>
-											<li><a href="#">Nightstands</a>
-												<ul>
-													<li><a href="#">Brown Finish</a></li>
-													<li><a href="#">Distressed</a></li>
-													<li><a href="#">Cherry Finish</a></li>
-													<li><a href="#">Weathered</a></li>
-													<li><a href="#">Laundry</a></li>
-												</ul>
-											</li>
-											<li><a href="#">Headboards</a>
-												<ul>
-													<li><a href="#">Upholstered</a></li>
-													<li><a href="#">Tufted</a></li>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Platform Beds</a></li>
-												</ul>
-											</li>
-											<li><a href="#">Headboards</a>
-												<ul>
-													<li><a href="#">Upholstered</a></li>
-													<li><a href="#">Tufted</a></li>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Platform Beds</a></li>
-													<li><a href="#">Platform Beds</a></li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-									<li><a href="shop.html">Dining Room</a>
-										<ul>
-											<li><a href="#">Dining tables</a>
-												<ul>
-													<li><a href="#">Crochet</a></li>
-													<li><a href="#">Sleeveless</a></li>
-													<li><a href="#">Regular Beds</a></li>
 													<li><a href="#">Stripes</a></li>
 													<li><a href="#">Sweaters</a></li>
 												</ul>
 											</li>
-											<li><a href="#">Dining chairs</a>
+											<li><a href="#">PERSONAL CARE</a>
 												<ul>
 													<li><a href="#">Ankle</a></li>
 													<li><a href="#">Distressed</a></li>
-													<li><a href="#">Cherry Finish</a></li>
-													<li><a href="#">Weathered</a></li>
-													<li><a href="#">Laundry</a></li>
 												</ul>
 											</li>
-											<li><a href="#">Headboards</a>
+											<li><a href="#">FRAGRANCE</a>
 												<ul>
 													<li><a href="#">Upholstered</a></li>
 													<li><a href="#">Tufted</a></li>
-													<li><a href="#">Phery Finiss</a></li>
-													<li><a href="#">Platform Beds</a></li>
+												</ul>
+											</li>
+											<li><a href="#">HAIR CARE</a>
+												<ul>
+													<li><a href="#">Upholstered</a></li>
+													<li><a href="#">Tufted</a></li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li><a href="{% url 'appliances' %}">Appliances</a>
+										<ul>
+											<li><a href="#">Small Appliances</a>
+												<ul>
+													<li><a href="#">Iron</a></li>
+													<li><a href="#">Adapter</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Large Appliances</a>
+												<ul>
+													<li><a href="#">Washing machine</a></li>
+													<li><a href="#">Microwave</a></li>
+												</ul>
+											</li>
+										</ul>
+									</li><li><a href="{% url 'electronics' %}">Electronics</a>
+										<ul>
+											<li><a href="#">Television & Video</a>
+												<ul>
+													<li><a href="#">T.V set</a></li>
+													<li><a href="#">Home theater</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Home Audio</a>
+												<ul>
+													<li><a href="#">Milk</a></li>
+													<li><a href="#">Cream</a></li>
+												</ul>
+											</li>
+										</ul>
+									</li><li><a href="{% url 'mobile' %}">Phones</a>
+										<ul>
+											<li><a href="#">Mobile Phones</a>
+												<ul>
+													<li><a href="#">Android</a></li>
+													<li><a href="#">Iphone</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Mobile Accessories</a>
+												<ul>
+													<li><a href="#">Charger</a></li>
+													<li><a href="#">Power bank</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Tablets</a>
+												<ul>
+													<li><a href="#">Samsung</a></li>
+													<li><a href="#">Apple</a></li>
+												</ul>
+											</li>
+										</ul>
+									</li><li><a href="{% url 'computing' %}">Computing</a>
+										<ul>
+											<li><a href="#">Computer</a>
+												<ul>
+													<li><a href="#">Apple</a></li>
+													<li><a href="#">HP</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Data storage</a>
+												<ul>
+													<li><a href="#">flash drive</a></li>
+													<li><a href="#">Hardisk</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Printers</a>
+												<ul>
+													<li><a href="#">Commercial</a></li>
+													<li><a href="#">Home</a></li>
 												</ul>
 											</li>
 										</ul>
