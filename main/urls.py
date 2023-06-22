@@ -24,5 +24,8 @@ urlpatterns = [
     path("feedback-form/", views.capture_user_feedback, name="capture_feedback"),
     path("login/", views.login_view, name="login"),
     
+    path("edit-account/", views.update_profile, name="edit-account"),
+    path("change-password/", views.change_password, name="change-password")
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

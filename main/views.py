@@ -4,7 +4,6 @@ from .forms import SignUpForm, SubscriptionForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from .models import Subscription,  Product, Cart, CartItem
-from cart.forms import CartItemForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
@@ -190,7 +189,6 @@ def capture_user_feedback(request):
         messages.success(request, "Thank you for your feedback")
     # Render the feedback form template for the user to provide feedback
     return render(request, 'contact.html')
-
     
 
 def login_view(request):
@@ -216,3 +214,47 @@ def logout_view(request):
     return redirect('login-in')
 
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+
+        # Retrieve the authenticated user
+        user = request.user
+
+        # Update the user's profile
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.username = email
+        user.save()
+
+        messages.success(request, 'Profile updated successfully!')
+        return JsonResponse({"message": "Profile update completed"})
+
+    # Render the profile update form
+    return render(request, 'user_accountpage.html')
+
+@login_required
+def change_password(request):
+    user = request.user
+    if request.method == "POST":
+        old_password = request.POST.get("old_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+        
+        if old_password != user.password:
+            messages.error(request, "Incorrect old password")
+        elif new_password != confirm_password:
+            messages.error(request, "Password do not match")
+        else:
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, "Password change successfully")
+
+    return render(request, "user_accountpage.html")
