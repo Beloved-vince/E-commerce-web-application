@@ -28,6 +28,6 @@ urlpatterns = [
     path("change-password/", views.change_password, name="change-password"),
     
     path("create-address/", views.create_address, name="address_list"),
-    
+    path("addresses/", views.show_addresses, name="addresses")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

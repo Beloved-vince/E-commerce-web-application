@@ -7,7 +7,7 @@ from .models import Subscription,  Product, Cart, CartItem
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
-from .models import Wishlist
+from .models import Wishlist, Address
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -262,13 +262,19 @@ def create_address(request):
     if request.method == 'POST':
         form = AddressForm(request.POST)
         print(form.errors)
+        if request.user.is_authenticated:
+            form.instance.user = request.user
         if form.is_valid():
-            address = form.save(commit=False)
-            address.user = request.user
-            address.save()
-            return redirect('address_list')  # Redirect to a success page or another view
+            address = form.save()
+            return redirect('addresses')  # Redirect to a success page or another view
     else:
         form = AddressForm()
+
     return render(request, 'user_accountpage.html', {'form': form})
 
-    
+@login_required
+def show_addresses(request):
+    if request.user.is_authenticated:
+        user_addresses = Address.objects.filter(user=request.user)[:4]
+        return render(request, 'user_accountpage.html', {'user_addresses': user_addresses})
+    return render(request, 'user_accountpage.html')

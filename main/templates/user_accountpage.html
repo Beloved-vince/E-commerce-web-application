@@ -511,32 +511,15 @@
 				{% if  request.user.is_authenticated %}
 
              <h4 class="profile_addresstab">Choose Address</h4>
-				 <div class="col-md-6 col-sm-6 col-xs-12 multiple_address">
-                                <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> E-199 kalka ji New Delhi infront of Sanatan Dharam Mandir New Delhi 110019
-</label>
-                               </div>
-<div class="col-md-6 col-sm-6 col-xs-12 multiple_address">
-                                <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> E-199 kalka ji New Delhi infront of Sanatan Dharam Mandir New Delhi 110019
-</label>
-                               </div>
-                               
-                               
-                               <div class="col-md-6 col-sm-6 col-xs-12 multiple_address">
-                                <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> E-199 kalka ji New Delhi infront of Sanatan Dharam Mandir New Delhi 110019  E-199 kalka ji New Delhi infront of Sanatan Dharam Mandir New Delhi 110019
-</label>
-                               </div>
-                               
-                               
-                               <div class="col-md-6 col-sm-6 col-xs-12 multiple_address">
-                                <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> E-199 kalka ji New Delhi infront of Sanatan Dharam Mandir New Delhi 110019
-</label>
-                               </div>
-
-                                </div>
+			 {% for address in user_addresses %}
+			 <div class="col-md-6 col-sm-6 col-xs-12 multiple_address">
+				<label class="radio-inline">
+				  <input type="radio" name="inlineRadioOptions" id="inlineRadio{{ forloop.counter }}" value="{{ address.id }}">
+				  {{ address.street }}, {{ address.city }}, {{ address.state }}, {{ address.country }} {{ address.postal_code }}
+				</label>
+			  </div>
+			  {% endfor %}
+                    </div>
                                 
                                 
                              
@@ -566,7 +549,7 @@
 						<div class="col-md-6">
 							<div class="checkout-form-list">
 								<label>Address <span class="required">*</span></label>										
-								<input type="text" placeholder="" name="address"/>
+								<input type="text" placeholder="" name="street"/>
 							</div>
 						</div>
 						<div class="col-md-12">
@@ -604,8 +587,8 @@
 											<tr>
 												<td class="product-remove"><a href="#">x</a></td>
 												<td class="product-thumbnail"><a href="#"><img src="img/wishlist/1.jpg" alt="" /></a></td>
-												<td class="product-name"><a href="#">Vestibulum suscipit</a></td>
-                                                <td class="product-name"><a href="#">GHJGHJGJHGHJHJHJ</a></td>
+												<td class="product-name"><a href="#">Washing Machine</a></td>
+                                                <td class="product-name"><a href="#">DJS33271881</a></td>
 												<td class="product-price"><span class="amount">Rs35.00</span></td>
 												<!--<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
 												<td class="product-add-to-cart"><a href="#"> Buy It Again</a></td>-->
@@ -613,9 +596,9 @@
 											<tr>
 												<td class="product-remove"><a href="#">x</a></td>
 												<td class="product-thumbnail"><a href="#"><img src="img/wishlist/2.jpg" alt="" /></a></td>
-												<td class="product-name"><a href="#">Vestibulum dictum magna</a></td>
-                                                 <td class="product-name"><a href="#">GHJGHJGJHGHJHJHJ</a></td>
-												<td class="product-price"><span class="amount">Rs50.00</span></td>
+												<td class="product-name"><a href="#">Television</a></td>
+                                                 <td class="product-name"><a href="#">DJS47626288</a></td>
+												<td class="product-price"><span class="amount">$250.00</span></td>
 												<!--<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
 												<td class="product-add-to-cart"><a href="#"> Buy It Again</a></td>-->
 											</tr>
@@ -645,9 +628,9 @@
 											<tr>
 												<!--<td class="product-remove"><a href="#">x</a></td>-->
 												
-												<td class="product-name"><a href="#">Vestibulum suscipit</a></td>
-                                                <td class="product-name"><a href="#">GHJGHJGJHGHJHJHJ</a></td>
-												<td class="product-price"><span class="amount">Rs35.00</span></td>
+												<td class="product-name"><a href="#">Television</a></td>
+                                                <td class="product-name"><a href="#">DJS82218221</a></td>
+												<td class="product-price"><span class="amount">$935.00</span></td>
                                                <td class="product-name"><a href="#">Check Process</a></td>
 												<!--<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
 												<td class="product-add-to-cart"><a href="#"> Buy It Again</a></td>-->
@@ -655,10 +638,10 @@
 											<tr>
 												<!--<td class="product-remove"><a href="#">x</a></td>-->
 												
-												<td class="product-name"><a href="#">Vestibulum dictum magna</a></td>
-                                                 <td class="product-name"><a href="#">GHJGHJGJHGHJHJHJ</a></td>
-												<td class="product-price"><span class="amount">Rs50.00</span></td>
-                                                <td class="product-name"><a href="#">Check Process</a></td>
+												<td class="product-name"><a href="#">Television</a></td>
+                                                <td class="product-name"><a href="#">DJS82218221</a></td>
+												<td class="product-price"><span class="amount">$935.00</span></td>
+                                               <td class="product-name"><a href="#">Check Process</a></td>
 												<!--<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
 												<td class="product-add-to-cart"><a href="#"> Buy It Again</a></td>-->
 											</tr>

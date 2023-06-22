@@ -56,7 +56,7 @@ class WishlistForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = '__all__'
+        fields = ["street", "city", "state", "country", "postal_code"]
 
     def clean(self):
         cleaned_data = super().clean()
