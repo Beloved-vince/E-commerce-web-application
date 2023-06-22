@@ -149,7 +149,7 @@ class Payment(models.Model):
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ManyToManyField(Product)
-    
+
     def __str__(self):
         return f"Wishlist for {self.user.username}"
 

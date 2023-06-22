@@ -9,7 +9,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="page-title">
-							<h3>Create New Customer Account</h3>
+							<h3>Order details</h3>
 						</div>
 					</div>
 				</div>
@@ -31,7 +31,7 @@
             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
 			{% endif %}
             {% if not request.user.is_authenticated %} <li><a href="#chnage_passwrd" data-toggle="tab">Change Password</a></li>{% endif %}
-			 {% if request.user.is_authenticated %}<li><a href="#deliveryaddress" data-toggle="tab">Delivery Address</a></li>{% endif %}
+			 <!-- <li><a href="#deliveryaddress" data-toggle="tab">Delivery Address</a></li>-->
 			 {% if request.user.is_authenticated %}  <li><a href="#reentorders" data-toggle="tab">Recent Orders</a></li>{% endif %}
 			 {% if request.user.is_authenticated %} <li><a href="#returnorders" data-toggle="tab">Return Orders</a></li>{% endif %}
           </ul>
@@ -85,67 +85,6 @@
              </div>
             
             
-            <div class="tab-pane" id="deliveryaddress">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-				{% if  request.user.is_authenticated %}
-
-             <h4 class="profile_addresstab">Choose Address</h4>
-			 {% for address in user_addresses %}
-			 <div class="col-md-6 col-sm-6 col-xs-12 multiple_address">
-				<label class="radio-inline">
-				  <input type="radio" name="inlineRadioOptions" id="inlineRadio{{ forloop.counter }}" value="{{ address.id }}">
-				  {{ address.street }}, {{ address.city }}, {{ address.state }}, {{ address.country }} {{ address.postal_code }}
-				</label>
-			  </div>
-			  {% endfor %}
-                    </div>
-                                
-                                
-                             
-             <div class="col-md-12 col-sm-12">
-             
-             <h4 class="profile_addresstab">Enter New Address Here</h4>
-             <form action="{% url 'address_list' %}" method="POST" id="address_form">
-				{% csrf_token %}
-             <div class="col-md-6">
-							<div class="checkout-form-list">
-								<label>City <span class="required">*</span></label>										
-								<input type="text" placeholder="" name="city"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="checkout-form-list">
-								<label>State <span class="required">*</span></label>										
-								<input type="text" placeholder="" name="state"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="checkout-form-list">
-								<label>Country <span class="required">*</span></label>										
-								<input type="text" placeholder="" name="country"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="checkout-form-list">
-								<label>Address <span class="required">*</span></label>										
-								<input type="text" placeholder="" name="street"/>
-							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="checkout-form-list">
-								<label>Postal code <span class="required">*</span></label>
-								<input type="number" placeholder="Street address" name="postal_code"/>
-							</div>
-						</div>
-						<button type="submit" class="btn btn-default login-btn">Submit</button>
-
-					</form>
-							{% endif %}
-             </div>                  
-									
-                                
-            
-            </div>
 			{% if request.user.is_authenticated %}
 
             <div class="tab-pane" id="reentorders">
@@ -181,16 +120,12 @@
 												<!--<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
 												<td class="product-add-to-cart"><a href="#"> Buy It Again</a></td>-->
 											</tr>
-											{% endif %}
 										</tbody>
 										
 									</table>
 								</div>
-            
             </div>
-			{% if request.user.is_authentcated %}
-
-            <div class="tab-pane" id="returnorders">
+			<div class="tab-pane" id="returnorders">
             <div class="wishlist-table table-responsive">
 									<table>
 										<thead>
@@ -224,14 +159,12 @@
 												<!--<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
 												<td class="product-add-to-cart"><a href="#"> Buy It Again</a></td>-->
 											</tr>
-											{% endif %}
+											
 										</tbody>
-										
 									</table>
 								</div>
-            
             </div>
-            
+			{% endif %}
             
           </div>
         </div>
@@ -243,26 +176,4 @@
 				</div>
 			</div>
 		<!-- contuct-form-area-end -->
-		<!-- contact-area-start -->
-		<div class="contact-area ptb-40">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mar_b-30">
-						<div class="contuct-info text-center">
-							<h4>Sign up for news & offers!</h4>
-							<p>You may safely unsubscribe at any time</p>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-8 col-sm-12 col-lg-offset-1 col-xs-12">
-						<div class="search-box">
-							<form action="#">
-								<input type="email" placeholder="Enter your email address"/>
-								<button><span class="lnr lnr-envelope"></span></button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- contact-area-end -->
-            {% endblock %}
+{% endblock %}

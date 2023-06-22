@@ -273,7 +273,7 @@ def create_address(request):
     return render(request, 'user_accountpage.html', {'form': form})
 
 @login_required
-def show_addresses(request):
+def order_details(request):
     if request.user.is_authenticated:
         user_addresses = Address.objects.filter(user=request.user)[:4]
         return render(request, 'user_accountpage.html', {'user_addresses': user_addresses})
