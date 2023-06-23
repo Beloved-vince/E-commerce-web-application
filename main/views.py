@@ -281,18 +281,21 @@ def order_details(request):
     return render(request, 'user_accountpage.html')
 
 
-from django.db.models import QuerySet
+from django.db.models import Q
 
 class SearchView(View):
     """Searching view """
     def get(self, request):
+        return render(request, 'shop.html')
+    
+    def post(self, request):
         """
             Get query paramters and return related object
         """
-        query = request.GET.get('query', '')
+        query = request.GET.get('search_query', '')
         results = self.perform_search(query)
         context = {'query': query, 'result': results}
-        return render(request, 'shop.html', context)
+        return render(request, 'index.html', context)
     
     def perform_search(self, query):
         """
@@ -300,9 +303,9 @@ class SearchView(View):
         to search across multiple fields
         """
         results = Product.objects.filter(
-            QuerySet(name__icontains=query) |
-            QuerySet(category__icontains=query) |
-            QuerySet(subcategory__icontains = query)
+            Q(name__icontains=query) |
+            Q(category__icontains=query) |
+            Q(subcategory__icontains = query)
         )
         
         return results

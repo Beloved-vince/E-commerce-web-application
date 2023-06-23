@@ -28,6 +28,8 @@ urlpatterns = [
     path("change-password/", views.change_password, name="change-password"),
     
     path("create-address/", views.create_address, name="address_list"),
-    path("order-details/", views.order_details, name="order-details")
+    path("order-details/", views.order_details, name="order-details"),
+    
+    path('search/', views.SearchView.as_view(), name='search')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
