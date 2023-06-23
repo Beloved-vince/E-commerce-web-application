@@ -284,7 +284,11 @@ def order_details(request):
 from django.db.models import QuerySet
 
 class SearchView(View):
+    """Searching view """
     def get(self, request):
+        """
+            Get query paramters and return related object
+        """
         query = request.GET.get('query', '')
         results = self.perform_search(query)
         context = {'query': query, 'result': results}
