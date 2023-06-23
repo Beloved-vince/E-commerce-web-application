@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from .models import Wishlist, Address
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views import View
 
 User = get_user_model()
 
@@ -278,3 +279,26 @@ def order_details(request):
         user_addresses = Address.objects.filter(user=request.user)[:4]
         return render(request, 'user_accountpage.html', {'user_addresses': user_addresses})
     return render(request, 'user_accountpage.html')
+
+
+from django.db.models import QuerySet
+
+class SearchView(View):
+    def get(self, request):
+        query = request.GET.get('query', '')
+        results = self.perform_search(query)
+        context = {'query': query, 'result': results}
+        return render(request, 'shop.html', context)
+    
+    def perform_search(self, query):
+        """
+        Perform the search using the Query object
+        to search across multiple fields
+        """
+        results = Product.objects.filter(
+            QuerySet(name__icontains=query) |
+            QuerySet(category__icontains=query) |
+            QuerySet(subcategory__icontains = query)
+        )
+        
+        return results

@@ -22,6 +22,10 @@
         <link rel="stylesheet" href="{% static 'css/animate.css' %}">
 		<!-- jquery-ui.min css -->
         <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+		<!-- nivo-slider css -->
+        <link rel="stylesheet" href="{% static 'css/nivo-slider.css' %}">
+		<!-- magnific-popup css -->
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
 		<!-- meanmenu css -->
         <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
 		<!-- owl.carousel css -->
@@ -54,7 +58,7 @@
 								<ul>
                                 <li class="click_menu"><a href="#">My Account <i class="fa fa-angle-down"></i></a>
 										<ul class="click_menu_show">
-											<li><a href="edit-account">My Account</a></li>
+											<li><a href="{% url 'edit-account' %}">My Account</a></li>
 											<li><a href="{% url 'wishlist' %}">My Wish List</a></li>
 											<li><a href="{% url 'login' %}">Sign In</a></li>
 										</ul>
@@ -95,7 +99,7 @@
 									<ul>
 										<li>
 											<div class="cart-img">
-												<a href="{% url 'cart_view' %}"><img src="{% static '/img/cart/1.jpg' %}" alt="" /></a>
+												<a href="{% url 'cart_view' %}"><img src="" alt="" /></a>
 											</div>
 											<div class="cart-content">
 												<h4><a href="#">1 x Faded...</a></h4>
@@ -108,7 +112,7 @@
 										</li>
 										<li>
 											<div class="cart-img">
-												<a href="#"><img src="{% static 'img/cart/1.jpg' %}" alt="" /></a>
+												<a href="#"><img src="" alt="" /></a>
 											</div>
 											<div class="cart-content">
 												<h4><a href="#">1 x Faded...</a></h4>
@@ -736,7 +740,7 @@
 					</div>
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 						<div class="copyright-img text-right">
-							<a href="#"><img src="img/payment.png" alt="" /></a>
+							<a href="#"><img src="{% static 'img/payment.png' %}" alt="" /></a>
 						</div>
 					</div>
 				</div>
