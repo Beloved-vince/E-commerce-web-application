@@ -293,15 +293,24 @@ class SearchView(View):
         return redirect('search_results')
     
 
+from django.urls import reverse
+from urllib.parse import urlencode
 
 class SearchResultsView(View):
     def get(self, request):
-        """Retrieve the seacr query from the session"""
+        """Retrieve the search query from the session"""
         try:
             session = SessionStore(session_key=request.session.session_key)
             search_query = session.get('search_query')
             
-            results  = self.perform_search(search_query)
+            results = self.perform_search(search_query)
+            
+            query_params = urlencode({'q': search_query})
+            redirect_url = reverse('search_results') + f'?{query_params}'
+            
+            if search_query and not request.GET.get('q'):
+                return redirect(redirect_url)
+
             context = {
                 'search_query': search_query,
                 'results': results
@@ -310,6 +319,7 @@ class SearchResultsView(View):
             return render(request, 'search.html', context)
         except Exception as e:
             return HttpResponse(e)
+
         
     def perform_search(self, query):
         """
