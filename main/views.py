@@ -63,6 +63,7 @@ def subscribe(request):
 
 
 def shop(request):
+    
     product = Product.objects.all()
     
     context = {
@@ -306,7 +307,7 @@ class SearchResultsView(View):
                 'results': results
             }
             
-            return render(request, 'shop.html', context)
+            return render(request, 'search.html', context)
         except Exception as e:
             return HttpResponse(e)
         
