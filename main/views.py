@@ -71,17 +71,9 @@ def shop(request):
     return render(request, 'shop.html', context)
 
 
-@api_view(["GET", "POST"])
-def details(request, product_id):
-    pass
-
-    # if request.method == "POST":
-    #     return redirect('add_cart')
 
 
-
-
-def post(request, product_id):
+def add_to_cart(request, product_id):
     """
     Saving cart items to the database
     """
@@ -282,30 +274,52 @@ def order_details(request):
 
 
 from django.db.models import Q
+from django.contrib.sessions.backends.db import SessionStore
 
 class SearchView(View):
-    """Searching view """
-    def get(self, request):
-        return render(request, 'shop.html')
-    
+    """Searching view """    
     def post(self, request):
         """
             Get query paramters and return related object
+            saving it in the browser session
         """
-        query = request.GET.get('search_query', '')
-        results = self.perform_search(query)
-        context = {'query': query, 'result': results}
-        return render(request, 'index.html', context)
+        search_query = request.POST.get('search_query', '')
+
+        session = SessionStore(session_key=request.session.session_key)
+        session['search_query'] = search_query
+        session.save()
     
+        return redirect('search_results')
+    
+
+
+class SearchResultsView(View):
+    def get(self, request):
+        """Retrieve the seacr query from the session"""
+        try:
+            session = SessionStore(session_key=request.session.session_key)
+            search_query = session.get('search_query')
+            
+            results  = self.perform_search(search_query)
+            context = {
+                'search_query': search_query,
+                'results': results
+            }
+            
+            return render(request, 'shop.html', context)
+        except Exception as e:
+            return HttpResponse(e)
+        
     def perform_search(self, query):
         """
         Perform the search using the Query object
         to search across multiple fields
         """
-        results = Product.objects.filter(
+        context = Product.objects.filter(
             Q(name__icontains=query) |
-            Q(category__icontains=query) |
-            Q(subcategory__icontains = query)
+            Q(category__name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(manufacture_by__icontains=query) |
+            Q(color__icontains=query)
         )
-        
-        return results
+        return context

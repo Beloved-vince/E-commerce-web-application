@@ -16,7 +16,7 @@ urlpatterns = [
     path('add-to-cart/', CartView.as_view(), name='add_to_cart'),
     
     path('view-cart-items/', CartView.as_view(), name='view_items'),
-    path("add-item-to-cart/<str:product_id>.html", views.post, name='add_cart'),
+    path("add-item-to-cart/<str:product_id>.html", views.add_to_cart, name='add_cart'),
     
     path("category/appliances/wish-list/", views.create_wishlist, name="wish_list"),
     path("wishlist/", views.wishlist_view, name="wishlist"),
@@ -30,6 +30,7 @@ urlpatterns = [
     path("create-address/", views.create_address, name="address_list"),
     path("order-details/", views.order_details, name="order-details"),
     
-    path('search/', views.SearchView.as_view(), name='search')
+    path('search/', views.SearchView.as_view(), name='search'),
+    path('search/results/', views.SearchResultsView.as_view(), name='search_results')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
