@@ -123,11 +123,11 @@ def add_to_cart(request, product_id):
 
     return render(request, "product-details.html", context)
 
-
-
+from django.views.decorators.csrf import csrf_exempt
+# @csrf_exempt
+@api_view(['POST'])
 def create_wishlist(request):
     """Wish list function"""
-
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
 
@@ -137,11 +137,8 @@ def create_wishlist(request):
 
             if product not in wishlist.product.all():
                 wishlist.product.add(product)
-                return JsonResponse({'message': 'Product added to wishlist successfully'})
-            else:
-                return JsonResponse({'message': 'Product already exists in the wishlist'})
-
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+    
+    return JsonResponse({'message': 'Success'}, status=200)
 
 def cart_view(request):
     user_cart = Cart.objects.filter(user=request.user).first()  # Get the user's cart
@@ -295,6 +292,8 @@ class SearchView(View):
 
 from django.urls import reverse
 from urllib.parse import urlencode
+from django.core.paginator import Paginator
+
 
 class SearchResultsView(View):
     def get(self, request):
@@ -305,6 +304,10 @@ class SearchResultsView(View):
             
             results = self.perform_search(search_query)
             
+            paginator = Paginator(results, per_page=10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
             query_params = urlencode({'q': search_query})
             redirect_url = reverse('search_results') + f'?{query_params}'
             
@@ -313,7 +316,7 @@ class SearchResultsView(View):
 
             context = {
                 'search_query': search_query,
-                'results': results
+                'results': page_obj
             }
             
             return render(request, 'search.html', context)

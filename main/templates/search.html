@@ -185,7 +185,7 @@
         <div class="single-new-product mt-40 category-new-product">
             <div class="product-img">
                 <a href="{% url 'add_cart' product_id=result.id %}">
-                    <img src="{{ result.image.url }}" class="first_img" alt="" />
+                    <img style="width: 200px; height:200px" src="{{ result.image.url }}" class="first_img" alt="" />
                 </a>
                 <div class="new-product-action">
                     <!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
@@ -228,27 +228,30 @@
 						</div>
 						<!-- category-products-area-end -->
 						<!-- pagination-area-start -->
-						<div class="pagination-area mt-40 pt-40">
-							<div class="pagination-text">
-								<p>Items 1-16 of 17</p>
-							</div>
-							<div class="bedroom-pagination">
-								<nav aria-label="Page navigation">
-									<ul class="pagination">
-										<li><a href="#">Page</a></li>
-										<li><a href="#">1</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li>
-											<a href="#" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-											</a>
-										</li>
-									</ul>
-								</nav>							
-							</div>
-						</div>
-						<!-- pagination-area-end -->
+<div class="pagination-area mt-40 pt-40">
+    <div class="pagination-text">
+        <p>Items {{ results.start_index }}-{{ results.end_index }} of {{ results.paginator.count }}</p>
+    </div>
+    <div class="bedroom-pagination">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if results.has_previous %}
+                <li><a href="?page=1">&laquo;</a></li>
+                <li><a href="?page={{ results.previous_page_number }}">{{ results.previous_page_number }}</a></li>
+                {% endif %}
+                
+                <li class="active"><a href="#">{{ results.number }}</a></li>
+                
+                {% if results.has_next %}
+                <li><a href="?page={{ results.next_page_number }}">{{ results.next_page_number }}</a></li>
+                <li><a href="?page={{ results.paginator.num_pages }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- pagination-area-end -->
+
 					</div>
 				</div>
 			</div>

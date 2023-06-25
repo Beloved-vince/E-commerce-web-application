@@ -185,7 +185,7 @@
 											<div class="single-new-product mt-40 category-new-product">
 												<div class="product-img">
 													<a href="{% url 'add_cart' product_id=product.id  %}">
-														<img src="{{ product.image.url }}" class="first_img" alt="" />
+														<img style="width: 200px; height:200px" src="{{ product.image.url }}" class="first_img" alt="" />
 														
 													</a>
 													<div class="new-product-action">
@@ -250,52 +250,53 @@
 			</div>
 		</div>
 		<!-- bedroom-all-product-area-end -->
-				<script>
-		$(document).ready(function() {
-		// Get the CSRF token from the cookies
-		var csrftoken = getCookie('csrftoken');
+	
+		<script>
+			 function getCookie(name) {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+  }
 
-		function getCookie(name) {
-			var cookieValue = null;
-			if (document.cookie && document.cookie !== '') {
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i < cookies.length; i++) {
-				var cookie = cookies[i].trim();
-				if (cookie.substring(0, name.length + 1) === (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-				}
+		  function createWishlist(event) {
+			event.preventDefault();
+		
+			const product_id = event.currentTarget.dataset.productId;
+		
+			if (product_id) {
+			  const csrfToken = getCookie('csrftoken');
+		
+			  const form = document.createElement('form');
+			  form.method = 'POST';
+			  form.action = 'wish-list/';
+			  form.style.display = 'none';
+		
+			  const productInput = document.createElement('input');
+			  productInput.type = 'hidden';
+			  productInput.name = 'product_id';
+			  productInput.value = product_id;
+		
+			  const csrfInput = document.createElement('input');
+			  csrfInput.type = 'hidden';
+			  csrfInput.name = 'csrfmiddlewaretoken';
+			  csrfInput.value = csrfToken;
+		
+			  form.appendChild(productInput);
+			  form.appendChild(csrfInput);
+			  document.body.appendChild(form);
+		
+			  form.submit();
+			  alert('Product added to wishlist successfully');
+			} else {
+			  console.error('Product ID is missing.');
 			}
-			}
-			return cookieValue;
-		}
-
-		$('.add-to-wishlist').click(function(e) {
-			e.preventDefault();
-
-			var productId = $(this).data('product-id');
-			var url = 'wish-list/';  // Replace with your actual URL for adding to wishlist
-
-			$.ajax({
-			type: 'POST',
-			url: url,
-			headers: {
-				'X-CSRFToken': csrftoken  // Set the CSRF token in the request headers
-			},
-			data: {
-				'product_id': productId
-			},
-			success: function(response) {
-				alert("Item added to your wishlist")
-				console.log('Product added to wishlist successfully');
-			},
-			error: function(xhr, status, error) {
-				console.error('Error adding product to wishlist:', error);
-			}
-			});
-		});
-		});
-
+		  }
+		
+		  // Add event listeners to all elements with the 'add-to-wishlist' class
+		  const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist');
+		  addToWishlistButtons.forEach(button => {
+			button.addEventListener('click', createWishlist);
+		  });
 		</script>
+		
 
 {% endblock %}
