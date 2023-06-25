@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import AbstractUser,  BaseUserManager, User
-
+from uuid import uuid4
 
 class Subscription(models.Model):
     email = models.EmailField(unique=True)
@@ -69,7 +69,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     manufacture_by = models.CharField(max_length=200)
     color = models.CharField(max_length=10, choices=COLOR_CHOICES)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=None)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=0)
     
     def __str__(self) -> str:
         return self.name

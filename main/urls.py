@@ -12,7 +12,7 @@ urlpatterns = [
     path('subscribe', views.subscribe, name="news-letter"),
     path('shop/', views.shop, name='shop'),
     
-    path('cart/', views.cart_view, name='cart_view'),    
+    path('cart-items/', views.cart_view, name='cart_view'),    
     path('add-to-cart/', CartView.as_view(), name='add_to_cart'),
     
     path('view-cart-items/', CartView.as_view(), name='view_items'),
@@ -31,6 +31,8 @@ urlpatterns = [
     path("order-details/", views.order_details, name="order-details"),
     
     path('search/', views.SearchView.as_view(), name='search'),
-    path('search/results/', views.SearchResultsView.as_view(), name='search_results')
+    path('search/results/', views.SearchResultsView.as_view(), name='search_results'),
+    
+    path('checkout', views.checkout, name='checkout')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

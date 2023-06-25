@@ -49,7 +49,7 @@
 					<div class="row">
 						<div class="col-lg-3 col-md-4 col-sm-5">
 							<div class="header-top-right header-top-left-4">
-								<p>FREE SHIPPING ON ORDERS OVER Rs499</p>
+								<p>FREE SHIPPING ON ORDERS OVER $499</p>
 							</div>
 						</div>					
 						<div class="col-lg-9 col-md-8 col-sm-7 header-top-right-4">
@@ -60,7 +60,7 @@
 										<ul class="click_menu_show">
 											<li><a href="{% url 'edit-account' %}">My Account</a></li>
 											<li><a href="{% url 'wishlist' %}">My Wish List</a></li>
-											<li><a href="{% url 'login' %}">Sign In</a></li>
+										{% if not request.user.is_authenticated %}	<li><a href="{% url 'login' %}">Sign In</a></li>{% endif %}
 										</ul>
 									</li>
 									<li><a href="{% url 'sign-up' %}">Create an Account</a></li>
@@ -100,7 +100,7 @@
 									<ul>
 										<li>
 											<div class="cart-img">
-												<a href="{% url 'cart_view' %}"><img src="" alt="" /></a>
+												<a href=""><img src="" alt="" /></a>
 											</div>
 											<div class="cart-content">
 												<h4><a href="#">1 x Faded...</a></h4>
@@ -416,6 +416,7 @@
 
 									<li><a href="">All pages</a>
 										<ul>
+											<li><a href="{% url 'home' %}">home</a></li>
 											<li><a href="{% url 'wishlist' %}">my wishlist</a></li>
 											<li><a href="{% url 'cart_view' %}">cart page</a></li>
 											<li><a href="checkout.html">checkout</a></li>
@@ -589,11 +590,12 @@
 											</li>
 										</ul>
 									</li>
-									<li><a href="shop.html">pages</a>
+									<li><a href="">pages</a>
 										<ul>
+											<li><a href="{% url 'home' %}">home</a></li>
 											<li><a href="{% url 'wishlist' %}">my wishlist</a></li>
 											<li><a href="{% url 'cart_view' %}">cart page</a></li>
-											<li><a href="">checkout</a></li>
+											<li><a href="{% url 'checkout' %}">checkout</a></li>
 											<li><a href="{% url 'edit-account' %}">User account</a></li>
 											<li><a href="{% url 'login' %}">login</a></li>
                                             <li><a href="{% url 'sign-up' %}">Register</a></li>
@@ -645,18 +647,18 @@
 					<div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 mar_b-30">
 						<div class="footer-wrapper">
 							<div class="footer-logo">
-								<a href="#"><img src="img/logo-4.png" alt="" /></a>
+								<a href="#"><img src="{% static 'img/logo-4.png' %}" alt="" /></a>
 							</div>
 							<p>We are a team of designers and developers that create high quality Magento, Prestashop, Opencart themes and provide premium and  support to our products.</p>
 							<ul>
 								<li>
-									<span>Address : </span> Delhi india
+									<span>Address : </span> Oyo state Ibadan
 								</li>
 								<li>
-									<span>Phone: </span> 123445689
+									<span>Phone: </span> +234-7085572785
 								</li>
 								<li>
-									<span>Email:</span> <a href="#">admin@dsfbvbbdvgz.company</a>
+									<span>Email:</span> <a href="#">vinceoludare@gmail.com</a>
 								</li>
 							</ul>
 							<ul class="footer-social">
@@ -732,7 +734,7 @@
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mar_b-30">
 						<div class="copyright text-left">
-							<p>2016 @ All Rights Reserved - <a href="#"></a></p>
+							<p>2023 @ All Rights Reserved - <a href="#"></a></p>
 						</div>
 					</div>
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">

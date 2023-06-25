@@ -11,6 +11,10 @@ from .models import Wishlist, Address
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views import View
+from django.urls import reverse
+from urllib.parse import urlencode
+from django.core.paginator import Paginator
+
 
 User = get_user_model()
 
@@ -65,7 +69,7 @@ def subscribe(request):
 def shop(request):
     
     product = Product.objects.all()
-    
+    paginator = Paginator(product, per_page=10)
     context = {
         'products': product,
     }
@@ -123,8 +127,8 @@ def add_to_cart(request, product_id):
 
     return render(request, "product-details.html", context)
 
-from django.views.decorators.csrf import csrf_exempt
-# @csrf_exempt
+
+
 @api_view(['POST'])
 def create_wishlist(request):
     """Wish list function"""
@@ -139,6 +143,7 @@ def create_wishlist(request):
                 wishlist.product.add(product)
     
     return JsonResponse({'message': 'Success'}, status=200)
+
 
 def cart_view(request):
     user_cart = Cart.objects.filter(user=request.user).first()  # Get the user's cart
@@ -289,11 +294,7 @@ class SearchView(View):
     
         return redirect('search_results')
     
-
-from django.urls import reverse
-from urllib.parse import urlencode
-from django.core.paginator import Paginator
-
+from django.core.paginator import EmptyPage, PageNotAnInteger
 
 class SearchResultsView(View):
     def get(self, request):
@@ -301,16 +302,21 @@ class SearchResultsView(View):
         try:
             session = SessionStore(session_key=request.session.session_key)
             search_query = session.get('search_query')
-            
+
             results = self.perform_search(search_query)
-            
-            paginator = Paginator(results, per_page=10)
+
+            paginator = Paginator(results, per_page=2)
             page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
+            try:
+                page_obj = paginator.get_page(page_number)
+            except PageNotAnInteger:
+                page_obj = paginator.get_page(1)
+            except EmptyPage:
+                page_obj = paginator.get_page(paginator.num_pages)
 
             query_params = urlencode({'q': search_query})
             redirect_url = reverse('search_results') + f'?{query_params}'
-            
+
             if search_query and not request.GET.get('q'):
                 return redirect(redirect_url)
 
@@ -318,10 +324,11 @@ class SearchResultsView(View):
                 'search_query': search_query,
                 'results': page_obj
             }
-            
+
             return render(request, 'search.html', context)
         except Exception as e:
             return HttpResponse(e)
+
 
         
     def perform_search(self, query):
@@ -334,6 +341,13 @@ class SearchResultsView(View):
             Q(category__name__icontains=query) |
             Q(description__icontains=query) |
             Q(manufacture_by__icontains=query) |
+            Q(slug__icontains=query) |
             Q(color__icontains=query)
         )
         return context
+    
+    
+
+
+def checkout(request):
+    return render(request, 'checkout.html')

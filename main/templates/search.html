@@ -181,53 +181,50 @@
 								<div class="tab-pane active" id="viewed">
 									<div class="row">
 										{% for result in results %}
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="single-new-product mt-40 category-new-product">
-            <div class="product-img">
-                <a href="{% url 'add_cart' product_id=result.id %}">
-                    <img style="width: 200px; height:200px" src="{{ result.image.url }}" class="first_img" alt="" />
-                </a>
-                <div class="new-product-action">
-                    <!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
-                    <a href="{% url 'add_cart' product_id=result.id %}">
-                        <span class="lnr lnr-cart cart_pad"></span>Add to Cart
-                    </a>
-                    <a href="#" class="add-to-wishlist" data-product-id="{{ result.id }}">
-                        <span class="lnr lnr-heart"></span>
-                    </a>
-                </div>
-                {% if result.discounted_price != result.price %}
-                    <span class="new">{{ result.discount }}</span>
-                {% endif %}
-            </div>
-            <div class="product-content text-center">
-                <a href="product-details.html">
-                    <h3>{{ result.name }}</h3>
-                </a>
-                <div class="product-price-star">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <div class="price">
-                    <h4>₦{{ result.discounted_price }}</h4>
-                    {% if result.discounted_price != result.price %}
-                        <h3 class="del-price"><del>₦{{ result.price }}</del></h3>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-{% endfor %}
-</div>
-								</div>
-								
-							</div>
-						</div>
-						<!-- category-products-area-end -->
-						<!-- pagination-area-start -->
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="single-new-product mt-40 category-new-product">
+                                                    <div class="product-img">
+                                                        <a href="{% url 'add_cart' product_id=result.id %}">
+                                                            <img style="width: 200px; height:200px" src="{{ result.image.url }}" class="first_img" alt="" />
+                                                        </a>
+                                                        <div class="new-product-action">
+                                                            <!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
+                                                            <a href="{% url 'add_cart' product_id=result.id %}">
+                                                                <span class="lnr lnr-cart cart_pad"></span>Add to Cart
+                                                            </a>
+                                                            <a href="#" class="add-to-wishlist" data-product-id="{{ result.id }}">
+                                                                <span class="lnr lnr-heart"></span>
+                                                            </a>
+                                                        </div>
+                                                        {% if result.discounted_price != result.price %}
+                                                            <span class="new">{{ result.discount }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="product-content text-center">
+                                                        <a href="product-details.html">
+                                                            <h3>{{ result.name }}</h3>
+                                                        </a>
+                                                        <div class="product-price-star">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        </div>
+                                                        <div class="price">
+                                                            <h4>₦{{ result.discounted_price }}</h4>
+                                                            {% if result.discounted_price != result.price %}
+                                                                <h3 class="del-price"><del>₦{{ result.price }}</del></h3>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                        </div>
+                                <!-- category-products-area-end -->
+                                       <!-- pagination-area-start -->
 <div class="pagination-area mt-40 pt-40">
     <div class="pagination-text">
         <p>Items {{ results.start_index }}-{{ results.end_index }} of {{ results.paginator.count }}</p>
@@ -236,26 +233,32 @@
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 {% if results.has_previous %}
-                <li><a href="?page=1">&laquo;</a></li>
-                <li><a href="?page={{ results.previous_page_number }}">{{ results.previous_page_number }}</a></li>
+                    <li><a class="pagination-link" href="?page={{ results.previous_page_number }}">Previous</a></li>
+                {% else %}
+                    <li class="disabled"><span class="pagination-link">Previous</span></li>
                 {% endif %}
-                
-                <li class="active"><a href="#">{{ results.number }}</a></li>
-                
+                {% for num in results.paginator.page_range %}
+                    {% if num == results.number %}
+                        <li class="active"><span>{{ num }}</span></li>
+                    {% else %}
+                        <li><a class="pagination-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
                 {% if results.has_next %}
-                <li><a href="?page={{ results.next_page_number }}">{{ results.next_page_number }}</a></li>
-                <li><a href="?page={{ results.paginator.num_pages }}">&raquo;</a></li>
+                    <li><a class="pagination-link" href="?page={{ results.next_page_number }}">Next</a></li>
+                {% else %}
+                    <li class="disabled"><span class="pagination-link">Next</span></li>
                 {% endif %}
             </ul>
-        </nav>
+        </nav>							
     </div>
 </div>
 <!-- pagination-area-end -->
 
-					</div>
-				</div>
-			</div>
-		</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 		<!-- bedroom-all-product-area-end -->
 				<script>
 		$(document).ready(function() {
@@ -304,5 +307,25 @@
 		});
 
 		</script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.pagination-link').on('click', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(data) {
+                $('.tab-content').html($(data).find('.tab-content').html());
+            },
+            error: function() {
+                alert('An error occurred while loading the page.');
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}
