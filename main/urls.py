@@ -19,6 +19,16 @@ urlpatterns = [
     path("add-item-to-cart/<str:product_id>.html", views.add_to_cart, name='add_cart'),
     
     path("category/appliances/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/grocery/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/indoor/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/health/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/electronics/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/phones-tablets/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/computing/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/fashion/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/baby-product/wish-list/", views.create_wishlist, name="wish_list"),
+    path("category/sport-goods/wish-list/", views.create_wishlist, name="wish_list"),
+
     path("wishlist/", views.wishlist_view, name="wishlist"),
     
     path("feedback-form/", views.capture_user_feedback, name="capture_feedback"),

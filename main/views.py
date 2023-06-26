@@ -13,8 +13,9 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.urls import reverse
 from urllib.parse import urlencode
-from django.core.paginator import Paginator
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+from django.contrib.sessions.backends.db import SessionStore
 
 User = get_user_model()
 
@@ -278,8 +279,6 @@ def order_details(request):
     return render(request, 'user_accountpage.html')
 
 
-from django.db.models import Q
-from django.contrib.sessions.backends.db import SessionStore
 
 class SearchView(View):
     """Searching view """    
@@ -296,15 +295,6 @@ class SearchView(View):
     
         return redirect('search_results')
     
-from django.core.paginator import EmptyPage, PageNotAnInteger
-
-from django.views import View
-from django.shortcuts import render, redirect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.urls import reverse
-from urllib.parse import urlencode
-from django.db.models import Q
-from .models import Product
 
 class SearchResultsView(View):
     def get(self, request):
@@ -337,10 +327,10 @@ class SearchResultsView(View):
             if page_number:
                 query_params['page'] = page_number
 
-            # Encode the query parameters into a URL-encoded string
+            # Encoding the query parameters into a URL-encoded string
             encoded_query_params = urlencode(query_params)
 
-            # Construct the redirect URL with the query parameters
+            # Constructing the redirect URL with the query parameters
             redirect_url = f"{reverse('search_results')}?{encoded_query_params}"
 
             # Redirect to the URL if search query exists and 'q' parameter is not present
@@ -357,7 +347,7 @@ class SearchResultsView(View):
             return HttpResponse(e)
 
 
-    def perform_search(self, query):
+    def perform_search(self, query, filters):
         """
         Perform the search using the Query object
         to search across multiple fields
@@ -371,8 +361,6 @@ class SearchResultsView(View):
             Q(color__icontains=query)
         )
         return context
-
-    
     
 
 

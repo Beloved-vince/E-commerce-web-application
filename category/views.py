@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import *
 from django.views import View
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Create your views here.
 class BaseProductView(View):
@@ -9,6 +11,7 @@ class BaseProductView(View):
     """
     model = None
     template_name = 'shop.html'
+    per_page = 5
 
     def get_queryset(self, subcategory=None):
         queryset = self.model.objects.all()
@@ -18,7 +21,22 @@ class BaseProductView(View):
 
     def get_context_data(self, subcategory=None, **kwargs):
         context = {}
-        context['products'] = self.get_queryset(subcategory)
+        
+        query_set = self.get_queryset(subcategory)
+        
+        paginator = Paginator(query_set, self.per_page)
+        
+        page_number = self.request.GET.get('page')
+        
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.get_page(1)
+        except EmptyPage:
+            page_obj = paginator.get_page(paginator.num_pages)
+            
+        context['products'] = page_obj
+        
         return context
 
     def get(self, request, *args, **kwargs):
