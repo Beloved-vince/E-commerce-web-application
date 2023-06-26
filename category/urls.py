@@ -36,6 +36,4 @@ urlpatterns = [
     
     path('video-games/', GameProductView.as_view(), name='games'),
     path('video-games/<str:subcategory>/', HealthProductView.as_view(), name='video-games_by_subcategory'),
-    
-    path('', views.home, name='home')
 ]

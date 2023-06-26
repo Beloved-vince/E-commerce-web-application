@@ -44,19 +44,10 @@ class Category(models.Model):
         return self.name
 
 
-COLOR_CHOICES = (
-    ('red', 'Red'),
-    ('blue', 'Blue'),
-    ('green', 'Green'),
-    ('yellow', 'Yellow'),
-    ('orange', 'Orange'),
-    ('purple', 'Purple'),
-    ('pink', 'Pink'),
-)
 
 
 
-# - - -------------------------------------------- BREAKAGE - ------------------------------------------------------#
+# - - -------------------------------------------- PRIMARY MODELS - ------------------------------------------------------#
 
 
 class Product(models.Model):
@@ -68,7 +59,6 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=0)
     
     def __str__(self) -> str:

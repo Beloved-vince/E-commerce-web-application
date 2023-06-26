@@ -16,11 +16,25 @@ from urllib.parse import urlencode
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib.sessions.backends.db import SessionStore
+from .models import UserFeedback
+
 
 User = get_user_model()
 
 def home(request):
-    return render(request, "index.html")
+    """
+    Return the first and last 10 product to
+    """
+    first_ten_product = Product.objects.order_by('created_at')[:10]
+    last_ten_product = Product.objects.order_by('created_at')[11:]
+    # sale_product = Product.objects.order_by("")
+    
+    context =  {
+        'products': first_ten_product,
+        'featured': last_ten_product
+        }
+    return render(request, "index.html", context)
+    
 
 
 def signup(request):
@@ -174,7 +188,6 @@ def wishlist_view(request):
     
     return render(request, 'wishlist.html', context)
 
-from .models import UserFeedback
 
 def capture_user_feedback(request):
     if request.method == 'POST':
@@ -333,7 +346,7 @@ class SearchResultsView(View):
             # Constructing the redirect URL with the query parameters
             redirect_url = f"{reverse('search_results')}?{encoded_query_params}"
 
-            # Redirect to the URL if search query exists and 'q' parameter is not present
+            # Redirecting to the URL if search query exists and 'q' parameter is not present
             if search_query and not request.GET.get('q'):
                 return redirect(redirect_url, permanent=True)
 

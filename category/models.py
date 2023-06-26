@@ -1,5 +1,5 @@
 from django.db import models
-from main.models import COLOR_CHOICES, Category, Product
+from main.models import Category, Product
 
 
 
