@@ -70,8 +70,10 @@ def shop(request):
     
     product = Product.objects.all()
     paginator = Paginator(product, per_page=10)
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
     context = {
-        'products': product,
+        'products': page_obj
     }
     return render(request, 'shop.html', context)
 
@@ -296,6 +298,14 @@ class SearchView(View):
     
 from django.core.paginator import EmptyPage, PageNotAnInteger
 
+from django.views import View
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse
+from urllib.parse import urlencode
+from django.db.models import Q
+from .models import Product
+
 class SearchResultsView(View):
     def get(self, request):
         """Retrieve the search query from the session"""
@@ -303,10 +313,16 @@ class SearchResultsView(View):
             session = SessionStore(session_key=request.session.session_key)
             search_query = session.get('search_query')
 
+            # Get the page number from the request GET parameters
+            page_number = request.GET.get('page')
+
+            # Perform the search
             results = self.perform_search(search_query)
 
+            # Create a paginator object with the results and set the desired number of items per page
             paginator = Paginator(results, per_page=2)
-            page_number = request.GET.get('page')
+
+            # Get the requested page from the paginator based on the page number
             try:
                 page_obj = paginator.get_page(page_number)
             except PageNotAnInteger:
@@ -314,11 +330,22 @@ class SearchResultsView(View):
             except EmptyPage:
                 page_obj = paginator.get_page(paginator.num_pages)
 
-            query_params = urlencode({'q': search_query})
-            redirect_url = reverse('search_results') + f'?{query_params}'
+            # Build the query parameters for the URL
+            query_params = {'q': search_query}
 
+            # Add the page number to the query parameters if it exists
+            if page_number:
+                query_params['page'] = page_number
+
+            # Encode the query parameters into a URL-encoded string
+            encoded_query_params = urlencode(query_params)
+
+            # Construct the redirect URL with the query parameters
+            redirect_url = f"{reverse('search_results')}?{encoded_query_params}"
+
+            # Redirect to the URL if search query exists and 'q' parameter is not present
             if search_query and not request.GET.get('q'):
-                return redirect(redirect_url)
+                return redirect(redirect_url, permanent=True)
 
             context = {
                 'search_query': search_query,
@@ -330,7 +357,6 @@ class SearchResultsView(View):
             return HttpResponse(e)
 
 
-        
     def perform_search(self, query):
         """
         Perform the search using the Query object
@@ -345,6 +371,7 @@ class SearchResultsView(View):
             Q(color__icontains=query)
         )
         return context
+
     
     
 
