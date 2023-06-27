@@ -42,9 +42,8 @@
 										<div class="product-icon-wrapper">
 											<div class="product-icon">
 												<ul>
-													<li><a href="#"><span class="lnr lnr-sync"></span></a></li>
-													<li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-													<li><a href="#"><span class="lnr lnr-cart"></span></a></li>
+													<li><a href="{% url 'wish_list' %}" data-product-id="{{ item.id }}"><span class="lnr lnr-heart"></span></a></li>
+													<li><a href=""><span class="lnr lnr-cart"></span></a></li>
 												</ul>								
 											</div>
 										</div>
@@ -297,5 +296,53 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- feature-preduct-area-end -->
+
+		
+		<script>
+			function getCookie(name) {
+   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+   return cookieValue ? cookieValue.pop() : '';
+ }
+
+		 function createWishlist(event) {
+		   event.preventDefault();
+	   
+		   const product_id = event.currentTarget.dataset.productId;
+	   
+		   if (product_id) {
+			 const csrfToken = getCookie('csrftoken');
+	   
+			 const form = document.createElement('form');
+			 form.method = 'POST';
+			 form.action = 'wish-list/';
+			 form.style.display = 'none';
+	   
+			 const productInput = document.createElement('input');
+			 productInput.type = 'hidden';
+			 productInput.name = 'product_id';
+			 productInput.value = product_id;
+	   
+			 const csrfInput = document.createElement('input');
+			 csrfInput.type = 'hidden';
+			 csrfInput.name = 'csrfmiddlewaretoken';
+			 csrfInput.value = csrfToken;
+	   
+			 form.appendChild(productInput);
+			 form.appendChild(csrfInput);
+			 document.body.appendChild(form);
+	   
+			 form.submit();
+		   } else {
+			 console.error('Product ID is missing.');
+		   }
+		 }
+	   
+		 // Add event listeners to all elements with the 'add-to-wishlist' class
+		 const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist');
+		 addToWishlistButtons.forEach(button => {
+		   button.addEventListener('click', createWishlist);
+		 });
+	   </script>
 		{% endblock %}
