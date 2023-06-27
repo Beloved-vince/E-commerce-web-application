@@ -18,6 +18,8 @@ urlpatterns = [
     path('view-cart-items/', CartView.as_view(), name='view_items'),
     path("add-item-to-cart/<str:product_id>.html", views.add_to_cart, name='add_cart'),
     
+    
+    # path("", views.create_wishlist, name="wish_list"),
     path("category/appliances/wish-list/", views.create_wishlist, name="wish_list"),
     path("category/grocery/wish-list/", views.create_wishlist, name="wish_list"),
     path("category/indoor/wish-list/", views.create_wishlist, name="wish_list"),

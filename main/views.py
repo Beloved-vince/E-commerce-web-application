@@ -25,16 +25,34 @@ def home(request):
     """
     Return the first and last 10 product to
     """
-    first_ten_product = Product.objects.order_by('created_at')[:10]
-    last_ten_product = Product.objects.order_by('created_at')[11:]
-    # sale_product = Product.objects.order_by("")
-    
-    context =  {
-        'products': first_ten_product,
-        'featured': last_ten_product
-        }
-    return render(request, "index.html", context)
-    
+    if request.method == 'GET':
+        first_ten_product = Product.objects.order_by('created_at')[:10]
+        last_ten_product = Product.objects.order_by('created_at')[11:]
+        # sale_product = Product.objects.order_by("")
+        
+        context =  {
+            'products': first_ten_product,
+            'featured': last_ten_product
+            }
+        return render(request, "index.html", context)
+    elif request.method == 'POST':
+        try:
+            if request.method == 'POST':
+                print('Received POST data:', request.POST)
+                product_id = request.POST.get('product_id')
+                print('Received product_id:', product_id)  
+                if product_id is not None:
+                    wishlist, created = Wishlist.objects.get_or_create(user=request.user)
+                    product = Product.objects.get(id=product_id)
+
+                    if product not in wishlist.product.all():
+                        wishlist.product.add(product)
+                wishlist.save()
+            return JsonResponse({'message': 'Success'}, status=200)
+        except Exception as e:
+            print(e)
+            return HttpResponse(e)
+    return JsonResponse({'message': 'Invalid request method'}, status=405)
 
 
 def signup(request):
@@ -161,20 +179,31 @@ def add_to_cart(request, product_id):
 @api_view(['POST'])
 def create_wishlist(request):
     """Wish list function"""
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
+    try:
+        if request.method == 'POST':
+            product_id = request.POST.get('product_id')
+            print(product_id)
+            if product_id is not None:
+                wishlist, created = Wishlist.objects.get_or_create(user=request.user)
+                product = Product.objects.get(id=product_id)
 
-        if product_id is not None:
-            wishlist, created = Wishlist.objects.get_or_create(user=request.user)
-            product = Product.objects.get(id=product_id)
+                if product not in wishlist.product.all():
+                    wishlist.product.add(product)
+        
+        return JsonResponse({'message': 'Success'}, status=200)
+    except Exception as e:
+        print(e)
+        return HttpResponse(e)
 
-            if product not in wishlist.product.all():
-                wishlist.product.add(product)
-    
-    return JsonResponse({'message': 'Success'}, status=200)
 
+import uuid
+
+def generate_session_id():
+    return str(uuid.uuid4())
 
 def cart_view(request):
+    # session_id = request.session.session_key
+    
     user_cart = Cart.objects.filter(user=request.user).first()  # Get the user's cart
     if user_cart:
         cart_items = CartItem.objects.filter(cart=user_cart)  # Get the cart items associated with the cart
@@ -184,8 +213,22 @@ def cart_view(request):
     for item in cart_items:
         item.subtotal = item.quantity * item.product.price  # Calculate the subtotal for each item
 
+    # if not request.user.is_authenticated:
+    #     cart_items_session = request.session.get('cart_items', [])
+    #     if session_id:
+    #         for item in cart_items_session:
+    #             product_id = int(item['product_id'])
+    #             product = get_object_or_404(Product, id=product_id)
+    #             item['subtotal'] = int(item['quantity']) * product.price
+    #     else:
+    #         session_id = request.session.session_key = generate_session_id()
+    #         request.session.modified = True
+    #     cart_items.extend(cart_items_session)
+    
+   
     context = {
-        "cart_data": cart_items
+        "cart_data": cart_items,
+        # 'session_id': session_id
     }
     return render(request, 'cart.html', context)
 

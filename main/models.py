@@ -58,8 +58,9 @@ COLOR_CHOICES = (
 
 # - - -------------------------------------------- BREAKAGE - ------------------------------------------------------#
 
-
+from uuid import uuid4
 class Product(models.Model):
+    # id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
