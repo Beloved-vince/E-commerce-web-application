@@ -82,13 +82,25 @@ def subscribe(request):
 
 
 def shop(request):
+    from django.db.models import F
     
-    product = Product.objects.all()
-    paginator = Paginator(product, per_page=10)
+    sort_by = request.GET.get('sort_by', 'position')
+    products = Product.objects.all()
+    
+    if sort_by == 'name':
+        products = products.order_by('name')
+    elif sort_by == 'price':
+        products = products.order_by('price')
+        
+    else:
+        products = products.annotate(position=F('id'))
+    # results = sorted(results, key=lambda x: x.price, reverse=True)
+    paginator = Paginator(products, per_page=10)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
     context = {
-        'products': page_obj
+        'products': page_obj,
+        'sort_by': sort_by
     }
     return render(request, 'shop.html', context)
 
@@ -309,9 +321,16 @@ class SearchView(View):
         return redirect('search_results')
     
 
+from django.views import View
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect, reverse
+from urllib.parse import urlencode
+from django.http import HttpResponse
+from django.contrib.sessions.backends.db import SessionStore
+from django.db.models import Q
+
 class SearchResultsView(View):
     def get(self, request):
-        """Retrieve the search query from the session"""
         try:
             session = SessionStore(session_key=request.session.session_key)
             search_query = session.get('search_query')
@@ -322,8 +341,19 @@ class SearchResultsView(View):
             # Perform the search
             results = self.perform_search(search_query)
 
+            # Get the sorting option from the request GET parameters
+            sort_by = request.GET.get('sort_by')
+
+            # Sort the results based on the sorting option
+            if sort_by == 'price':
+                results = sorted(results, key=lambda x: x.discounted_price, reverse=True)
+            elif sort_by == 'name':
+                results = sorted(results, key=lambda x: x.name)
+            else:
+                results = sorted(results, key=lambda x: x.id)  # Default sort by ID
+
             # Create a paginator object with the results and set the desired number of items per page
-            paginator = Paginator(results, per_page=2)
+            paginator = Paginator(results, per_page=5)
 
             # Get the requested page from the paginator based on the page number
             try:
@@ -352,7 +382,8 @@ class SearchResultsView(View):
 
             context = {
                 'search_query': search_query,
-                'results': page_obj
+                'results': page_obj,
+                'sort_by': sort_by
             }
 
             return render(request, 'search.html', context)
@@ -360,7 +391,7 @@ class SearchResultsView(View):
             return HttpResponse(e)
 
 
-    def perform_search(self, query, filters):
+    def perform_search(self, query):
         """
         Perform the search using the Query object
         to search across multiple fields
@@ -374,8 +405,8 @@ class SearchResultsView(View):
             Q(color__icontains=query)
         )
         return context
-    
 
+        
 
 def checkout(request):
     return render(request, 'checkout.html')

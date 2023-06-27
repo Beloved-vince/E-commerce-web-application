@@ -153,27 +153,19 @@
 										<div class="porduct-option-left floatleft">
 											<span> Items 1-16 of 17</span>
 										</div>
-										<div class="product-option-right floatright">
-											<div class="sort-by">
-												<label>Sort By:</label>
-												<select class="cust-select">
-												   <option selected="selected">Position</option>
-												   <option>name</option>
-												   <option>price</option>
-											   </select>
-												<a href="#"><i class="fa fa-arrow-up"></i></a>
+										<form id="sort-form">
+											<div class="product-option-right floatright">
+												<div class="sort-by">
+													<label>Sort By:</label>
+													<select class="cust-select" onchange="submitForm()" name="sort_by">
+													   <option value="position" {% if sort_by == 'position' %}selected{% endif %}>Position</option>
+													   <option value="name" {% if sort_by == 'name' %}selected{% endif %}>name</option>
+													   <option value="price" {% if sort_by == 'price' %}selected{% endif %}>price</option>
+												   </select>
+													<a href="#"><i class="fa fa-arrow-up"></i></a>
+												</div>
 											</div>
-											<div class="sort-by">
-												<label>Show:</label>
-												<select class="cust-select cust-select-2">
-												   <option selected="selected">21</option>
-												   <option>22</option>
-												   <option>23</option>
-												   <option>24</option>
-												   <option>25</option>
-											   </select>												
-											</div>
-										</div>
+											</form>
 									</div>
 								</div>
 							</div>
@@ -186,7 +178,6 @@
 												<div class="product-img">
 													<a href="{% url 'add_cart' product_id=product.id  %}">
 														<img style="width: 200px; height:200px" src="{{ product.image.url }}" class="first_img" alt="" />
-														
 													</a>
 													<div class="new-product-action">
 														<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
@@ -303,6 +294,10 @@
 			button.addEventListener('click', createWishlist);
 		  });
 		</script>
-		
+				<script>
+					function submitForm() {
+						document.getElementById('sort-form').submit();
+					}
+				</script>
 
 {% endblock %}

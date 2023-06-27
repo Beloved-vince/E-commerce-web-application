@@ -21,6 +21,18 @@ class BaseProductView(View):
 
     def get_context_data(self, subcategory=None, **kwargs):
         context = {}
+        from django.db.models import F
+        
+        sort_by = self.request.GET.get('sort_by', 'position')
+        products = Product.objects.all()
+        
+        if sort_by == 'name':
+            products = products.order_by('name')
+        elif sort_by == 'price':
+            products = products.order_by('price')
+            
+        else:
+            products = products.annotate(position=F('id'))
         
         query_set = self.get_queryset(subcategory)
         
@@ -36,6 +48,7 @@ class BaseProductView(View):
             page_obj = paginator.get_page(paginator.num_pages)
             
         context['products'] = page_obj
+        context['sort_by'] = sort_by
         
         return context
 
