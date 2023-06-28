@@ -38,19 +38,33 @@
 											</tr>
 										</thead>
 										<tbody>
-											
 											{% for item in wishlist %}
-												{% for product in item.product.all %}
-													<tr>
-														<td class="product-remove"><a href="#">x</a></td>
-														<td class="product-thumbnail"><a href="#"><img src="{{ product.image.url }}" alt="" /></a></td>
-														<td class="product-name"><a href="#">{{ product.name }}</a></td>
-														<td class="product-price"><span class="amount">${{ product.price }}</span></td>
-														<td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
-														<td class="product-add-to-cart"><a href=""> Add to Cart</a></td>
-													</tr>
-												{% endfor %}
-											{% endfor %}
+									{% for product in item.product.all %}
+										<tr id="wishlist-item-{{ item.id }}-{{ product.id }}">
+										<td class="product-remove">
+											<a href="#" onclick="deleteWishlistItem('{{ item.id }}', '{{ product.id }}')">
+											x
+											</a>
+										</td>
+										<td class="product-thumbnail">
+											<a href="#"><img src="{{ product.image.url }}" alt="" /></a>
+										</td>
+										<td class="product-name">
+											<a href="#">{{ product.name }}</a>
+										</td>
+										<td class="product-price">
+											<span class="amount">${{ product.price }}</span>
+										</td>
+										<td class="product-stock-status">
+											<span class="wishlist-in-stock">In Stock</span>
+										</td>
+										<td class="product-add-to-cart">
+											<a href="#">Add to Cart</a>
+										</td>
+										</tr>
+									{% endfor %}
+									{% endfor %}
+
 
 										</tbody>
 									</table>
@@ -62,4 +76,44 @@
 			</div>
 		</div>
 		<!-- wishlist-area end -->
+		<script>
+			function deleteWishlistItem(wishlistId, productId) {
+			  const endpoint = `http://127.0.0.1:8000/wishlist/${wishlistId}/delete/${productId}/`;
+			  
+			  fetch(endpoint, {
+				method: 'DELETE',
+				headers: {
+				  'Accept': 'application/json',
+				  'Content-Type': 'application/json',
+				  'X-CSRFToken': getCSRFToken(), // Include the CSRF token for Django's protection
+				},
+			  })
+				.then(response => response.json())
+				.then(data => {
+				  console.log(data);
+				  // Check the response and handle as needed
+				  if (data.message === 'Success') {
+					// Item deleted successfully, remove it from the DOM
+					alert("Item remove from wishlist")
+					$('#wishlist-item-' + wishlistId + '-' + productId).remove();
+				  } else {
+					console.error('Error deleting wishlist item:', data.message);
+				  }
+				})
+				.catch(error => {
+				  console.error('Error deleting wishlist item:', error);
+				});
+			}
+			
+			// Helper function to retrieve the CSRF token from cookies
+			function getCSRFToken() {
+			  const cookieValue = document.cookie
+				.split('; ')
+				.find(cookie => cookie.startsWith('csrftoken='))
+				.split('=')[1];
+			  return cookieValue;
+			}
+			</script>
+			
 		{% endblock %}
+		

@@ -175,7 +175,7 @@ def add_to_cart(request, product_id):
     return render(request, "product-details.html", context)
 
 
-
+@login_required
 @api_view(['POST'])
 def create_wishlist(request):
     """Wish list function"""
@@ -194,6 +194,29 @@ def create_wishlist(request):
     except Exception as e:
         print(e)
         return HttpResponse(e)
+
+
+
+def delete_wishlist_item(request, wishlist_id, product_id):
+    """Delete a wishlist item"""
+    try:
+        if request.method == 'DELETE':
+            wishlist = Wishlist.objects.get(id=wishlist_id, user=request.user)
+            product = Product.objects.get(id=product_id)
+            
+            if product in wishlist.product.all():
+                wishlist.product.remove(product)
+                return JsonResponse({'message': 'Success'}, status=200)
+            else:
+                return JsonResponse({'message': 'Product not found in wishlist'}, status=404)
+        
+    except Wishlist.DoesNotExist:
+        return JsonResponse({'message': 'Wishlist does not exist'}, status=404)
+    
+    except Exception as e:
+        return JsonResponse({'message': 'Error deleting wishlist item', 'error': str(e)}, status=500)
+
+
 
 
 import uuid
@@ -240,6 +263,7 @@ def wishlist_view(request):
     context = {
         "wishlist": wishlist
     }
+    
     
     return render(request, 'wishlist.html', context)
 
