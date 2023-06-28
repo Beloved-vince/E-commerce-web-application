@@ -3,11 +3,11 @@ from rest_framework.decorators import api_view
 from .forms import SignUpForm, SubscriptionForm, AddressForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Subscription,  Product, Cart, CartItem
+from .models import Subscription,  Product, Cart, CartItem, Wishlist, Address, UserFeedback
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
-from .models import Wishlist, Address
+from .models import
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views import View
@@ -16,7 +16,6 @@ from urllib.parse import urlencode
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib.sessions.backends.db import SessionStore
-from .models import UserFeedback
 
 
 User = get_user_model()
