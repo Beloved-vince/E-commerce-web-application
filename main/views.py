@@ -219,39 +219,24 @@ def delete_wishlist_item(request, wishlist_id, product_id):
 
 
 
-import uuid
-
-def generate_session_id():
-    return str(uuid.uuid4())
 
 def cart_view(request):
-    # session_id = request.session.session_key
+    total_price = 0
     
-    user_cart = Cart.objects.filter(user=request.user).first()  # Get the user's cart
+    user_cart = Cart.objects.filter(user=request.user).first()  
     if user_cart:
-        cart_items = CartItem.objects.filter(cart=user_cart)  # Get the cart items associated with the cart
+        cart_items = CartItem.objects.filter(cart=user_cart)  # 
     else:
-        cart_items = []  # Empty list if the user does not have a cart
+        cart_items = []
 
     for item in cart_items:
-        item.subtotal = item.quantity * item.product.price  # Calculate the subtotal for each item
-
-    # if not request.user.is_authenticated:
-    #     cart_items_session = request.session.get('cart_items', [])
-    #     if session_id:
-    #         for item in cart_items_session:
-    #             product_id = int(item['product_id'])
-    #             product = get_object_or_404(Product, id=product_id)
-    #             item['subtotal'] = int(item['quantity']) * product.price
-    #     else:
-    #         session_id = request.session.session_key = generate_session_id()
-    #         request.session.modified = True
-    #     cart_items.extend(cart_items_session)
-    
+        item.subtotal = item.quantity * item.product.price
+        total_price += item.subtotal
+        
    
     context = {
         "cart_data": cart_items,
-        # 'session_id': session_id
+        'total_price': total_price
     }
     return render(request, 'cart.html', context)
 
@@ -267,6 +252,20 @@ def wishlist_view(request):
     
     return render(request, 'wishlist.html', context)
 
+
+
+def delete_cart_item(request, item_id):
+    # Get the CartItem object
+    cart_item = get_object_or_404(CartItem, id=item_id)
+
+    # Check if the user has permission to delete the cart item
+    if cart_item.cart.user != request.user:
+        return JsonResponse({'error': 'You do not have permission to delete this item.'}, status=403)
+
+    # Delete the cart item
+    cart_item.delete()
+
+    return JsonResponse({'message': 'Cart item deleted successfully.'})
 
 def capture_user_feedback(request):
     if request.method == 'POST':

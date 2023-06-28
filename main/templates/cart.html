@@ -65,7 +65,7 @@
 											</td>
 											<td class="product-subtotal">${{ item.subtotal }}</td> <!-- Calculating the subtotal by multiplying quantity and price -->
 											<td class="product-remove">
-												<a href="#"><i class="fa fa-times"></i></a>
+												<a href="#" class="delete-items" onclick="deleteCartItem('{{ item.id }}')"><i class="fa fa-times"></i></a>
 											</td>
 										</tr>
 									{% endfor %}
@@ -92,7 +92,7 @@
 											<tbody>
 												<tr class="cart-subtotal">
 													<th>Subtotal</th>
-													<td><span class="amount">$215.00</span></td>
+													<td><span class="amount">${{ total_price }}</span></td>
 												</tr>
 												<tr class="shipping">
 													<th>Shipping</th>
@@ -118,7 +118,7 @@
 												<tr class="order-total">
 													<th>Total</th>
 													<td>
-														<strong><span class="amount">$215.00</span></strong>
+														<strong><span class="amount">$</span></strong>
 													</td>
 												</tr>											
 											</tbody>
@@ -195,5 +195,45 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-</script>	
+</script>
+<script>
+	function deleteCartItem(itemId) {
+	  const endpoint = `http://127.0.0.1:8000/cart-items/${itemId}`;
+	  
+	  fetch(endpoint, {
+		method: 'DELETE',
+		headers: {
+		  'Accept': 'application/json',
+		  'Content-Type': 'application/json',
+		  'X-CSRFToken': getCSRFToken(), // Include the CSRF token for Django's protection
+		},
+	  })
+	  .then(response => response.json())
+	  .then(data => {
+		console.log(data);
+		// Check the response and handle as needed
+		if (data.message === 'Cart item deleted successfully.') {
+			alert("Items deleted")
+		  // Item deleted successfully, redirect to the cart view
+		  window.location.href = '/cart-items/';
+		} else {
+		  console.error('Error deleting cart item:', data.error);
+		}
+	  })
+	  .catch(error => {
+		console.error('Error deleting cart item:', error);
+	  });
+	}
+	
+	// Helper function to retrieve the CSRF token from cookies
+	function getCSRFToken() {
+	  const cookieValue = document.cookie
+		.split('; ')
+		.find(cookie => cookie.startsWith('csrftoken='))
+		.split('=')[1];
+	  return cookieValue;
+	}
+	</script>
+	
+
 {% endblock %}
