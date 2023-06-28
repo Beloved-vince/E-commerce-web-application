@@ -59,7 +59,8 @@
 											<span class="wishlist-in-stock">In Stock</span>
 										</td>
 										<td class="product-add-to-cart">
-											<a href="#">Add to Cart</a>
+											<input type="hidden" name="product" value="{{ product.id }}" required>
+											<a href="" type="submit">Add to Cart</a>
 										</td>
 										</tr>
 									{% endfor %}
@@ -114,6 +115,46 @@
 			  return cookieValue;
 			}
 			</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	  const form = document.querySelector('.cart');
+	  const quantityInput = document.getElementById('french-hens');
+	  const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+	
+	  form.addEventListener('submit', function(event) {
+		event.preventDefault(); // Prevent the default form submission
+	
+		const quantity = quantityInput.value;
+	
+		// Create a new FormData object and append the quantity and CSRF token
+		const formData = new FormData();
+		formData.append('quantity', quantity);
+		formData.append('csrfmiddlewaretoken', csrfToken);
+	
+		// Send the form data to the server using fetch API
+		fetch('', {
+		  method: 'POST',
+		  body: formData,
+		  headers: {
+			'X-CSRFToken': csrfToken
+		  }
+		})
+		.then(response => response.json())
+		.then(data => {
+		  // Handle the response from the server
+		  console.log(data);
+		  alert("Item added to cart")
+		})
+		.catch(error => {
+		  // Handle any error that occurred during the request
+		  console.error(error);
+		});
+	  });
+	});
+	
+	</script>		  
+	
 			
 		{% endblock %}
 		
