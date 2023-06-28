@@ -7,7 +7,6 @@ from .models import Subscription,  Product, Cart, CartItem, Wishlist, Address, U
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
-from .models import
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views import View
@@ -130,10 +129,13 @@ def add_to_cart(request, product_id):
     """
     product = get_object_or_404(Product, id=product_id)
     image_url = product.image.url
-
+    price = product.price
+    name = product.name
     context = {
         'image_url': image_url,
-        'product_id': product_id
+        'product_id': product_id,
+        'name': name,
+        'price': price,
     }
 
     if request.method == 'POST':

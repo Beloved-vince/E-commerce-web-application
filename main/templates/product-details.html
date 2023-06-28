@@ -29,7 +29,7 @@
 										<div class="tab-pane active" id="view1">
 											<a class="image-link" href="img/product/15.jpg"><img style="width:800px; height:500px " src="{{ image_url }}" alt=""></a>
 										</div>							
-										<div class="tab-pane" id="view2">
+										<!-- <div class="tab-pane" id="view2">
 											<a class="image-link" href="img/product/2.jpg"><img src="{{ image_url }}" alt=""></a>							
 										</div>
 										<div class="tab-pane" id="view3">
@@ -40,21 +40,21 @@
 										</div>
 										<div class="tab-pane" id="view5">
 											<a class="image-link" href="img/product/6.jpg"><img src="{{ image_url }}" alt=""></a>							
-										</div>
+										</div> -->
 									</div>
 									  <!-- Nav tabs -->
-									<ul class="sinple-tab-menu" role="tablist">
+									<!-- <ul class="sinple-tab-menu" role="tablist">
 										<li class=" active"><a href="#view1" data-toggle="tab"><img style="width:79px; height:99px;" src="img/product/15.jpg" alt="" /></a></li>
 										<li><a href="#view2" data-toggle="tab"><img src="{% static 'img/product/tab/2.jpg' %}" alt="" /></a></li>
 										<li><a href="#view3" data-toggle="tab"><img src="{% static 'img/product/tab/1.jpg' %}" alt="" /></a></li>
 										<li><a href="#view4" data-toggle="tab"><img src="{% static 'img/product/tab/4.jpg' %}" alt="" /></a></li>
 										<li><a href="#view5" data-toggle="tab"><img src="{% static 'img/product/tab/5.jpg' %}" alt="" /></a></li>
-									</ul>									
+									</ul>									 -->
 							   </div>
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 									<div class="product-simple-content">
 										<div class="sinple-c-title">
-											<h3>Bruno Compete Hoodie</h3>
+											<h3>{{ name }}</h3>
 										</div>
 										<div class="checkbox">
 											<span><i class="fa fa-check-square" aria-hidden="true"></i>In stock</span>
@@ -68,7 +68,7 @@
 											<i class="fa fa-star-o"></i>
 											<span>(1Review)&nbsp;&nbsp;|&nbsp;&nbsp; Add Your Review </span>
 										</div>
-											<h4>Rs33.00</h4>
+											<h4>${{ price }}</h4>
 											
 											<form method="POST" class="cart">
 												{% csrf_token %}
