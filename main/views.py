@@ -263,8 +263,7 @@ def update_cart(request):
             cart_item.save()
         
         
-    return redirect('cart_view')  # Assuming the URL name for the cart page is 'cart'
-
+    return redirect('cart_view')
 
 
 def delete_cart_item(request, item_id):
@@ -290,7 +289,6 @@ def capture_user_feedback(request):
         feedback = UserFeedback(email=email, name=name, phone_number=phone_number, feedback_text=feedback_text)
         feedback.save()
         messages.success(request, "Thank you for your feedback")
-    # Render the feedback form template for the user to provide feedback
     return render(request, 'contact.html')
     
 
@@ -400,13 +398,6 @@ class SearchView(View):
         return redirect('search_results')
     
 
-from django.views import View
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect, reverse
-from urllib.parse import urlencode
-from django.http import HttpResponse
-from django.contrib.sessions.backends.db import SessionStore
-from django.db.models import Q
 
 class SearchResultsView(View):
     def get(self, request):
