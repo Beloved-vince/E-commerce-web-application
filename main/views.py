@@ -253,6 +253,19 @@ def wishlist_view(request):
     return render(request, 'wishlist.html', context)
 
 
+def update_cart(request):
+    if request.method == 'POST':
+        cart_data = request.POST.getlist('quantity') 
+        cart_item_ids = request.POST.getlist('cart_item_id')  
+        for item_id, quantity in zip(cart_item_ids, cart_data):
+            cart_item = CartItem.objects.get(id=item_id)
+            cart_item.quantity = int(quantity)
+            cart_item.save()
+        
+        
+    return redirect('cart_view')  # Assuming the URL name for the cart page is 'cart'
+
+
 
 def delete_cart_item(request, item_id):
     # Get the CartItem object

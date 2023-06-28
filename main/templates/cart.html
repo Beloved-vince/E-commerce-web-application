@@ -35,7 +35,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<form action="#">				
+						<form action="{% url 'update-items' %}" method="POST" id="updateCartForm">
+							{% csrf_token %}
 							<div class="table-content table-responsive">
 								<table>
 									<thead>
@@ -61,7 +62,8 @@
 												<span class="amount">${{ item.product.price }}</span>  <!-- Assuming the product price is stored in a "price" field -->
 											</td>
 											<td class="product-quantity">
-												<input type="number" value="{{ item.quantity }}" />
+												<input type="hidden" name="cart_item_id" value="{{ item.id }}">
+												<input type="number" value="{{ item.quantity }}" name="quantity"/>
 											</td>
 											<td class="product-subtotal">${{ item.subtotal }}</td> <!-- Calculating the subtotal by multiplying quantity and price -->
 											<td class="product-remove">
@@ -127,7 +129,7 @@
 											<a href="{% url 'checkout' %}">Proceed to Checkout</a>
 										</div>
 									</div>
-								</div>
+								</div> 
 							</div>
 						</form>	
 					</div>
@@ -135,29 +137,6 @@
 			</div>
 		</div>
 		<!-- cart-main-area end -->
-
-		<script src="{% static 'js/vendor/jquery-1.12.0.min.js' %}"></script>
-		<!-- bootstrap js -->
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-		<!-- owl.carousel js -->
-        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-		<!-- meanmenu js -->
-        <script src="{% static 'js/jquery.meanmenu.js' %}"></script>
-		<!-- jquery-ui js -->
-        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-		<!-- nivo.slider js -->
-        <script src="{% static 'js/jquery.nivo.slider.js' %}"></script>			
-		<!-- magnific-popup js -->
-        <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>			
-		<!-- wow js -->
-        <script src="{% static 'js/wow.min.js' %}"></script>
-		<!-- scrolly js -->
-        <script src="{% static 'js/jquery.scrolly.js' %}"></script>
-		<!-- plugins js -->
-        <script src="{% static 'js/plugins.js' %}"></script>
-		<!-- main js -->
-        <script src="{% static 'js/main.js' %}"></script>
-		<script src="{% static 'js/main.js' %}"></script>
 		<script>
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.querySelector('.cart');
