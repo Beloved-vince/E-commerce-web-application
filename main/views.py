@@ -200,6 +200,7 @@ def wishlist_view(request):
     return render(request, 'wishlist.html', context)
 
 def add_to_cart(request, product_id):
+    import random
     """
     Saving cart items to the database
     """
@@ -207,14 +208,15 @@ def add_to_cart(request, product_id):
     image_url = product.image.url
     price = product.price
     name = product.name
-    category = product.category.MultipleObjectsReturned
-    product_n = product.id
+    category = product.category
+    related_products = Product.objects.filter(category=category).exclude(id=product_id)[:6]
+    related_products = random.sample(list(related_products), min(len(related_products), 6))
     context = {
         'image_url': image_url,
         'product_id': product_id,
         'name': name,
         'price': price,
-        'product_n': product_n
+        'related_products': related_products 
     }
 
     if request.method == 'POST':
