@@ -123,57 +123,6 @@ def shop(request):
 
 
 
-def add_to_cart(request, product_id):
-    """
-    Saving cart items to the database
-    """
-    product = get_object_or_404(Product, id=product_id)
-    image_url = product.image.url
-    price = product.price
-    name = product.name
-    context = {
-        'image_url': image_url,
-        'product_id': product_id,
-        'name': name,
-        'price': price,
-    }
-
-    if request.method == 'POST':
-        quantity = request.POST.get('quantity')
-        print(quantity)
-        if quantity is not None:
-            if request.user.is_authenticated:
-                try:
-                    cart = Cart.objects.get(user=request.user)
-                except Cart.DoesNotExist:
-                    cart = Cart.objects.create(user=request.user)
-                
-                product = get_object_or_404(Product, id=product_id)
-                
-                # Check if a CartItem with the same product already exists in the cart
-                try:
-                    cart_item = CartItem.objects.get(cart=cart, product=product)
-                    cart_item.quantity += int(quantity)
-                    cart_item.save()
-                except CartItem.DoesNotExist:
-                    cart_item = CartItem.objects.create(cart=cart, product=product, quantity=int(quantity))
-                
-                return JsonResponse({'message': 'Quantity increased and sent to the database.'})
-            else:
-                # For unauthenticated users, store the cart items in the session
-                cart_items = request.session.get('cart_items', [])
-                cart_items.append({
-                    'product_id': product_id,
-                    'quantity': quantity,
-                })
-                request.session['cart_items'] = cart_items
-
-                return JsonResponse({'message': 'Cart item stored in session.'})
-
-        else:
-            return JsonResponse({'message': 'Quantity is missing.'})
-
-    return render(request, "product-details.html", context)
 
 
 @login_required
@@ -191,7 +140,7 @@ def create_wishlist(request):
                 if product not in wishlist.product.all():
                     wishlist.product.add(product)
         
-        return JsonResponse({'message': 'Success'}, status=200)
+                return JsonResponse({'message': 'Success'}, status=200)
     except Exception as e:
         print(e)
         return HttpResponse(e)
@@ -216,9 +165,6 @@ def delete_wishlist_item(request, wishlist_id, product_id):
     
     except Exception as e:
         return JsonResponse({'message': 'Error deleting wishlist item', 'error': str(e)}, status=500)
-
-
-
 
 
 def cart_view(request):
@@ -253,6 +199,49 @@ def wishlist_view(request):
     
     return render(request, 'wishlist.html', context)
 
+def add_to_cart(request, product_id):
+    """
+    Saving cart items to the database
+    """
+    product = get_object_or_404(Product, id=product_id)
+    image_url = product.image.url
+    price = product.price
+    name = product.name
+    category = product.category.MultipleObjectsReturned
+    product_n = product.id
+    context = {
+        'image_url': image_url,
+        'product_id': product_id,
+        'name': name,
+        'price': price,
+        'product_n': product_n
+    }
+
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        print(quantity)
+        if quantity is not None:
+            if request.user.is_authenticated:
+                try:
+                    cart = Cart.objects.get(user=request.user)
+                except Cart.DoesNotExist:
+                    cart = Cart.objects.create(user=request.user)
+                
+                product = get_object_or_404(Product, id=product_id)
+                
+                # Check if a CartItem with the same product already exists in the cart
+                try:
+                    cart_item = CartItem.objects.get(cart=cart, product=product)
+                    cart_item.quantity += int(quantity)
+                    cart_item.save()
+                except CartItem.DoesNotExist:
+                    cart_item = CartItem.objects.create(cart=cart, product=product, quantity=int(quantity))
+                
+                return JsonResponse({'message': 'Quantity increased and sent to the database.'})
+        else:
+            return JsonResponse({'message': 'Quantity is missing.'})
+
+    return render(request, "product-details.html", context)
 
 def update_cart(request):
     if request.method == 'POST':

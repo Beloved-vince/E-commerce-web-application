@@ -116,6 +116,8 @@
 							<div class="tab-content">
 								<div class="tab-pane active" id="viewed">
 									<div class="row">
+										<form action="" method="POST">
+											{% csrf_token %}
 										{% for product in results  %}
 										<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 											<div class="single-new-product mt-40 category-new-product">
@@ -127,8 +129,7 @@
 													<div class="new-product-action">
 														<!-- <a href="#"><span class="lnr lnr-sync"></span></a> -->
 														<a href="{% url 'add_cart' product_id=product.id %}"><span class="lnr lnr-cart cart_pad"></span>Add to Cart</a>
-														<a href="#" class="add-to-wishlist" data-product-id="{{ product.id }}"><span class="lnr lnr-heart"></span></a>
-
+														<a href="#" class="add-to-wishlist" data-product-id="{{ product.id }}" onclick="createWishlistItem(event)"><span class="lnr lnr-heart"></span></a>
 													</div>
 													{% if product.discounted_price != product.price %}
 													<span class="new">{{ product.discount }}</span>
@@ -153,6 +154,7 @@
 											</div>
 										</div>
 										{% endfor %}
+									</form>
 									</div>
 								</div>
 								
@@ -193,56 +195,46 @@
 			</div>
 		</div>
 		<!-- bedroom-all-product-area-end -->
-	
 		<script>
-			 function getCookie(name) {
+function createWishlistItem(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const productId = event.target.getAttribute('data-product-id');
+
+    const formData = new FormData();
+    formData.append('product_id', productId);
+
+    const endpoint = 'http://127.0.0.1:8000/search/results/wish-list';
+
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+		alert("Item added to wishlist")
+        console.log(data);
+		console.log(productId)
+        // Process the response data as needed
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function getCookie(name) {
     const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
     return cookieValue ? cookieValue.pop() : '';
-  }
+}
 
-		  function createWishlist(event) {
-			event.preventDefault();
-		
-			const product_id = event.currentTarget.dataset.productId;
-		
-			if (product_id) {
-			  const csrfToken = getCookie('csrftoken');
-		
-			  const form = document.createElement('form');
-			  form.method = 'POST';
-			  form.action = 'wish-list/';
-			  form.style.display = 'none';
-		
-			  const productInput = document.createElement('input');
-			  productInput.type = 'hidden';
-			  productInput.name = 'product_id';
-			  productInput.value = product_id;
-		
-			  const csrfInput = document.createElement('input');
-			  csrfInput.type = 'hidden';
-			  csrfInput.name = 'csrfmiddlewaretoken';
-			  csrfInput.value = csrfToken;
-		
-			  form.appendChild(productInput);
-			  form.appendChild(csrfInput);
-			  document.body.appendChild(form);
-		
-			  form.submit();
-			} else {
-			  console.error('Product ID is missing.');
-			}
-		  }
-		
-		  // Add event listeners to all elements with the 'add-to-wishlist' class
-		  const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist');
-		  addToWishlistButtons.forEach(button => {
-			button.addEventListener('click', createWishlist);
-		  });
-		</script>
-		<script>
+</script>		
+<script>
 			function submitForm() {
 				document.getElementById('sort-form').submit();
 			}
-		</script>
+</script>
 
 {% endblock %}
