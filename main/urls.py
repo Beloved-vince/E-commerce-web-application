@@ -49,6 +49,8 @@ urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search'),
     path('search/results/', views.SearchResultsView.as_view(), name='search_results'),
     
-    path('checkout', views.checkout, name='checkout')
+    path('checkout', views.checkout, name='checkout'),
+    
+    # path('accounts/profile/', views.redirect, name="redirect")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

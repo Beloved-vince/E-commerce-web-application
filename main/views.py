@@ -463,7 +463,7 @@ class SearchResultsView(View):
             Q(category__name__icontains=query) |
             Q(description__icontains=query) |
             Q(manufacture_by__icontains=query) |
-            Q(slug__icontains=query) 
+            Q(slug__icontains=query) ,
         )
         return context
 
@@ -481,3 +481,9 @@ def checkout(request):
     else:
         form = AddressForm()
     return render(request, 'checkout.html')
+
+
+
+
+def redirect(request):
+    return redirect('home')

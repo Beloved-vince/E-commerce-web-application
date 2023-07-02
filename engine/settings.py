@@ -102,6 +102,11 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+
+
 WSGI_APPLICATION = 'engine.wsgi.application'
 
 
