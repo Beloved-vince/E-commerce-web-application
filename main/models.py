@@ -58,9 +58,9 @@ COLOR_CHOICES = (
 
 # - - -------------------------------------------- BREAKAGE - ------------------------------------------------------#
 
-from uuid import uuid4
+from uuid import uuid4, uuid3, uuid5
 class Product(models.Model):
-    # id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -69,7 +69,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     manufacture_by = models.CharField(max_length=200)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES)
+    # color = models.CharField(max_length=10, choices=COLOR_CHOICES)
     discount_percentage = models.DecimalField(max_digits=7, decimal_places=2, null=True, default=0)
     
     def __str__(self) -> str:
@@ -108,6 +108,7 @@ class CartItem(models.Model):
     
 
 class Order(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid3, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)

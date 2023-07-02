@@ -11,7 +11,7 @@ class BaseProductView(View):
     """
     model = None
     template_name = 'shop.html'
-    per_page = 5
+    per_page = 20
 
     def get_queryset(self, subcategory=None):
         queryset = self.model.objects.all()

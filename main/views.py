@@ -139,8 +139,8 @@ def create_wishlist(request):
 
                 if product not in wishlist.product.all():
                     wishlist.product.add(product)
-        
-                return JsonResponse({'message': 'Success'}, status=200)
+                    return JsonResponse({'message': 'Success'}, status=200)
+            return JsonResponse({"message": "Product added to wishlist"})
     except Exception as e:
         print(e)
         return HttpResponse(e)
@@ -463,12 +463,21 @@ class SearchResultsView(View):
             Q(category__name__icontains=query) |
             Q(description__icontains=query) |
             Q(manufacture_by__icontains=query) |
-            Q(slug__icontains=query) |
-            Q(color__icontains=query)
+            Q(slug__icontains=query) 
         )
         return context
 
         
 
 def checkout(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        print(form.errors)
+        if request.user.is_authenticated:
+            form.instance.user = request.user
+        if form.is_valid():
+            address = form.save()
+            return redirect('addresses')  # Redirect to a success page or another view
+    else:
+        form = AddressForm()
     return render(request, 'checkout.html')
