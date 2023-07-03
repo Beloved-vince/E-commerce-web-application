@@ -399,7 +399,7 @@ class SearchResultsView(View):
 
             # Get the page number from the request GET parameters
             page_number = request.GET.get('page')
-
+    
             # Perform the search
             results = self.perform_search(search_query)
 
@@ -450,6 +450,7 @@ class SearchResultsView(View):
 
             return render(request, 'search.html', context)
         except Exception as e:
+            print(e)
             return HttpResponse(e)
 
 
@@ -463,27 +464,12 @@ class SearchResultsView(View):
             Q(category__name__icontains=query) |
             Q(description__icontains=query) |
             Q(manufacture_by__icontains=query) |
-            Q(slug__icontains=query) ,
+            Q(slug__icontains=query)
         )
         return context
 
         
 
 def checkout(request):
-    if request.method == 'POST':
-        form = AddressForm(request.POST)
-        print(form.errors)
-        if request.user.is_authenticated:
-            form.instance.user = request.user
-        if form.is_valid():
-            address = form.save()
-            return redirect('addresses')  # Redirect to a success page or another view
-    else:
-        form = AddressForm()
+
     return render(request, 'checkout.html')
-
-
-
-
-def redirect(request):
-    return redirect('home')

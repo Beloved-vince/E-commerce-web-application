@@ -59,13 +59,13 @@
 												<a href="#">{{ item.product.name }}</a>  <!-- Assuming the product name is stored in a "name" field -->
 											</td>
 											<td class="product-price">
-												<span class="amount">${{ item.product.price }}</span>  <!-- Assuming the product price is stored in a "price" field -->
+												<span class="amount">#{{ item.product.price }}</span>  <!-- Assuming the product price is stored in a "price" field -->
 											</td>
 											<td class="product-quantity">
 												<input type="hidden" name="cart_item_id" value="{{ item.id }}">
 												<input type="number" value="{{ item.quantity }}" name="quantity"/>
 											</td>
-											<td class="product-subtotal">${{ item.subtotal }}</td> <!-- Calculating the subtotal by multiplying quantity and price -->
+											<td class="product-subtotal">#{{ item.subtotal }}</td> <!-- Calculating the subtotal by multiplying quantity and price -->
 											<td class="product-remove">
 												<a href="#" class="delete-items" onclick="deleteCartItem('{{ item.id }}')"><i class="fa fa-times"></i></a>
 											</td>
@@ -94,24 +94,19 @@
 											<tbody>
 												<tr class="cart-subtotal">
 													<th>Subtotal</th>
-													<td><span class="amount">${{ total_price }}</span></td>
+													<td><span class="amount">#{{ total_price }}</span></td>
 												</tr>
 												<tr class="shipping">
-													<th>Shipping</th>
+													<th>Shipping Fee</th>
 													<td>
 														<ul id="shipping_method">
 															<li>
-																<input type="radio" /> 
+																<!-- <input type="radio" />  -->
 																<label>
-																	Flat Rate: <span class="amount">$7.00</span>
+																	<span class="amount">#5000.00</span>
 																</label>
 															</li>
-															<li>
-																<input type="radio" /> 
-																<label>
-																	Free Shipping
-																</label>
-															</li>
+															
 															<li></li>
 														</ul>
 														<p><a class="shipping-calculator-button" href="#">Calculate Shipping</a></p>

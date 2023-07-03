@@ -34,7 +34,7 @@ urlpatterns = [
     path("category/baby-product/wish-list/", views.create_wishlist, name="wish_list"),
     path("category/sport-goods/wish-list/", views.create_wishlist, name="wish_list"),
     
-    path('wishlist/<int:wishlist_id>/delete/<int:product_id>/', views.delete_wishlist_item, name='delete_wishlist_item'),
+    path('wishlist/<int:wishlist_id>/delete/<str:product_id>/', views.delete_wishlist_item, name='delete_wishlist_item'),
     path("wishlist/", views.wishlist_view, name="wishlist"),
     
     path("feedback-form/", views.capture_user_feedback, name="capture_feedback"),
@@ -51,6 +51,5 @@ urlpatterns = [
     
     path('checkout', views.checkout, name='checkout'),
     
-    # path('accounts/profile/', views.redirect, name="redirect")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
