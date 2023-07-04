@@ -21,7 +21,8 @@ User = get_user_model()
 
 def home(request):
     """
-    Return the first and last 10 product to
+    Return the first and last 10 product to the home page
+    Also get product id if user is adding to wishlist
     """
     if request.method == 'GET':
         first_ten_product = Product.objects.order_by('created_at')[:10]
@@ -98,6 +99,10 @@ def subscribe(request):
 
 
 def shop(request):
+    """
+    Sorting and pagination to product list
+    order by: name, price and position
+    """
     from django.db.models import F
     
     sort_by = request.GET.get('sort_by', 'position')
@@ -128,7 +133,11 @@ def shop(request):
 @login_required
 @api_view(['POST'])
 def create_wishlist(request):
-    """Wish list function"""
+    """
+    Wish list function
+    Get product id if not already added to the wishislist else
+        do nothin
+    """
     try:
         if request.method == 'POST':
             product_id = request.POST.get('product_id')
@@ -148,7 +157,10 @@ def create_wishlist(request):
 
 
 def delete_wishlist_item(request, wishlist_id, product_id):
-    """Delete a wishlist item"""
+    """
+    Delete a wishlist item
+    Get wishlist id and product id
+    """
     try:
         if request.method == 'DELETE':
             wishlist = Wishlist.objects.get(id=wishlist_id, user=request.user)
@@ -168,6 +180,9 @@ def delete_wishlist_item(request, wishlist_id, product_id):
 
 
 def cart_view(request):
+    """
+    Return all cart item of requested user and prices
+    """
     total_price = 0
     
     user_cart = Cart.objects.filter(user=request.user).first()  
@@ -202,7 +217,9 @@ def wishlist_view(request):
 def add_to_cart(request, product_id):
     import random
     """
-    Saving cart items to the database
+    Saving cart items to the database if request is POST
+    Rendering related product base on category they belong to
+    random six
     """
     product = get_object_or_404(Product, id=product_id)
     image_url = product.image.url
@@ -246,6 +263,9 @@ def add_to_cart(request, product_id):
     return render(request, "product-details.html", context)
 
 def update_cart(request):
+    """
+    Updating cart item
+    """
     if request.method == 'POST':
         cart_data = request.POST.getlist('quantity') 
         cart_item_ids = request.POST.getlist('cart_item_id')  
@@ -259,7 +279,9 @@ def update_cart(request):
 
 
 def delete_cart_item(request, item_id):
-    # Get the CartItem object
+    """
+    Deleting cart items from the database 
+    """
     cart_item = get_object_or_404(CartItem, id=item_id)
 
     # Check if the user has permission to delete the cart item
@@ -272,6 +294,13 @@ def delete_cart_item(request, item_id):
     return JsonResponse({'message': 'Cart item deleted successfully.'})
 
 def capture_user_feedback(request):
+    """
+    Getting user feedback on a product
+        name of the user
+        email of the user
+        phone_number of the user
+        feedback_text of the user
+    """
     if request.method == 'POST':
         email = request.POST.get('email')
         name = request.POST.get('name')
@@ -285,6 +314,9 @@ def capture_user_feedback(request):
     
 
 def login_view(request):
+    """
+    Login user if email and password is in the database
+    """
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -303,15 +335,20 @@ def login_view(request):
 
 
 def logout_view(request):
+    """
+    Logout user function
+    """
     logout(request)
     return redirect('login-in')
 
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-
 @login_required
 def update_profile(request):
+    """
+    Update user profile account if authenticated
+        first_name, last_name, email
+        username is then set as email
+    """
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -334,6 +371,9 @@ def update_profile(request):
     return render(request, 'user_accountpage.html')
 
 def change_password(request):
+    """
+    Change password function 
+    """
     user = request.user
     if request.method == "POST":
         new_password = request.POST.get("new_password")
@@ -352,6 +392,9 @@ def change_password(request):
 
 @login_required
 def create_address(request):
+    """
+    Address of the user to deliver product to
+    """
     if request.method == 'POST':
         form = AddressForm(request.POST)
         print(form.errors)
@@ -359,7 +402,7 @@ def create_address(request):
             form.instance.user = request.user
         if form.is_valid():
             address = form.save()
-            return redirect('addresses')  # Redirect to a success page or another view
+            return redirect('addresses')
     else:
         form = AddressForm()
 
@@ -367,6 +410,7 @@ def create_address(request):
 
 @login_required
 def order_details(request):
+    """Ordered products details of the user"""
     if request.user.is_authenticated:
         user_addresses = Address.objects.filter(user=request.user)[:4]
         return render(request, 'user_accountpage.html', {'user_addresses': user_addresses})
