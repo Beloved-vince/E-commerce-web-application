@@ -81,7 +81,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "vinceoludare@gmail.com" 
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
 
-DEFAULT_FROM_EMAIL = 'noreply<no_reply@http://127.0.0.1:8000/>'
+DEFAULT_FROM_EMAIL = 'noreply<no_reply@vinceoludare@gmail.com>'
 
 
 EXPIRE_AFTER = '10m'
