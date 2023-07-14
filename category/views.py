@@ -3,7 +3,6 @@ from .models import *
 from django.views import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
 # Create your views here.
 class BaseProductView(View):
     """

@@ -63,7 +63,7 @@
 										{% if not request.user.is_authenticated %}	<li><a href="{% url 'login' %}">Sign In</a></li>{% endif %}
 										</ul>
 									</li>
-									<li><a href="{% url 'sign-up' %}">Create an Account</a></li>
+									{% if not request.user.is_authenticated %}	<li><a href="{% url 'sign-up' %}">Create an Account</a></li>{% endif %}
 								</ul>
 							</div>
 						</div>

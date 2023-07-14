@@ -28,31 +28,22 @@
 								<h3>Create New User Account</h3>
 							</div>
 							<div class="login-form" id="errorMsg">
-								<form method="POST" name="signupForm" id="signup_form">
-									{% csrf_token %}
-									<div class="form-group login-page">
-										<label for="exampleInputName1">First Name <span>*</span></label>
-										<input type="text" class="form-control" id="exampleInputName1" name="first_name">
-									</div>
-									<div class="form-group login-page">
-										<label for="exampleInputName2">Last Name <span>*</span></label>
-										<input type="text" class="form-control" id="exampleInputName2" name="last_name" required>
-									</div>
-								
-									<div class="form-group login-page">
-										<label for="exampleInputEmail1">Email <span>*</span></labelexampleInputPassword1>
-										<input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
-									</div>								
-									<div class="form-group login-page">
-										<label for="exampleInputPassword1">Password <span>*</span></label>
-										<input type="Password" class="form-control" id="exampleInputPassword1" name="password" required>
-									</div>							
-									<div class="form-group login-page">
-										<label for="exampleInputPassword2">Confirm Password <span>*</span></label>
-										<input type="Password" class="form-control" id="exampleInputPassword2" name="confirm_password" required>
-									</div>
-									<button type="submit"  onclick="submitHandler" class="btn btn-default login-btn">Create an Account</button>
-								</form>						
+								<form method="post">  
+									{% csrf_token %}  
+									  {% for field in form %}  
+									  <p>  
+										{{ field.label_tag }}<br>  
+										{{ field }}  
+										{% if field.help_text %}  
+										  <small style="display: none ">{{ field.help_text }}</small>  
+										{% endif %}  
+										{% for error in field.errors %}  
+										  <p style="color: red">{{ error }}</p>  
+										{% endfor %}  
+									  </p>  
+									  {% endfor %}  
+									<button type="submit">Sign up</button>  
+								  </form> 				
 							</div>
 							<a href="#" class="back">back</a>
 						</div>
@@ -75,53 +66,53 @@
 			</div>
 		<!-- contuct-form-area-end -->
 				<script>
-const userdata =  document.getElementById("signup_form")
-userdata.addEventListener("submit", submitHandler);
+// const userdata =  document.getElementById("signup_form")
+// userdata.addEventListener("submit", submitHandler);
        
-function submitHandler(e){
-		e.preventDefault();
+// function submitHandler(e){
+// 		e.preventDefault();
 
-		first_name = document.getElementById("exampleInputName1").value;
-		last_name = document.getElementById("exampleInputName2").value;
-		confirm_password = document.getElementById("exampleInputPassword2").value
-		email = document.getElementById("exampleInputEmail1").value
-		password = document.getElementById("exampleInputPassword1").value
+// 		first_name = document.getElementById("exampleInputName1").value;
+// 		last_name = document.getElementById("exampleInputName2").value;
+// 		confirm_password = document.getElementById("exampleInputPassword2").value
+// 		email = document.getElementById("exampleInputEmail1").value
+// 		password = document.getElementById("exampleInputPassword1").value
 
-		if (first_name == "" || last_name == "" || password == "" || email == "") {
-			alert("Please fill the required fields correctly")
-			return false;
-		}
-		else if (password != confirm_password){
-			console.log(password + confirm_password)
-			alert("Password do not match");
-			return false;
-		}
-		else {
-				const formData = new FormData();
-		//console.log(name);
-		formData.append('first_name', first_name);
-		formData.append('email', email);
-		formData.append('last_name', last_name);
-		formData.append('password', password);
-		formData.append('confirm_password', confirm_password)
-		formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-		console.log(formData);
-		fetch('{% url "sign-up" %}', {
-			method: 'POST',
-			body: formData
-		})
-		.then(response => response)
-		.then(data => {
-			alert("Success! Thanks for subscribing for our news letter")
-			window.location.href = '/shop/'
-		})
-		.catch(error => {
-			alert("error in the input field. Try again ")
-		});
-				return true;
-		}
+// 		if (first_name == "" || last_name == "" || password == "" || email == "") {
+// 			alert("Please fill the required fields correctly")
+// 			return false;
+// 		}
+// 		else if (password != confirm_password){
+// 			console.log(password + confirm_password)
+// 			alert("Password do not match");
+// 			return false;
+// 		}
+// 		else {
+// 				const formData = new FormData();
+// 		//console.log(name);
+// 		formData.append('first_name', first_name);
+// 		formData.append('email', email);
+// 		formData.append('last_name', last_name);
+// 		formData.append('password', password);
+// 		formData.append('confirm_password', confirm_password)
+// 		formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+// 		console.log(formData);
+// 		fetch('{% url "sign-up" %}', {
+// 			method: 'POST',
+// 			body: formData
+// 		})
+// 		.then(response => response)
+// 		.then(data => {
+// 			alert("Success! You have been redirected")
+// 			window.location.href = '/confirmation/'
+// 		})
+// 		.catch(error => {
+// 			alert("error in the input field. Try again ")
+// 		});
+// 				return true;
+// 		}
 
-}
+// }
 
 
 
@@ -150,8 +141,8 @@ function subscriberForm(e){
 		})
 		.then(response => response)
 		.then(data => {
-			alert("Success! Thanks for subscribing for our news letter")
-			window.location.href = '/shop/'
+			alert("Success! you have been redirected")
+			// window.location.href = '/confirmation/'
 		})
 		.catch(error => {
 			alert("error ")

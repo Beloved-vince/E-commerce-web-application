@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('allauth.urls')),
     path('', include('main.urls')),
     path('category/', include('category.urls')),
+    path('verification/', include('verify_email.urls')),
     # path('cart/', include('cart.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
