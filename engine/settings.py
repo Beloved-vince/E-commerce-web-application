@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i^)p7c%pn2v$n-ln3l#by56(xte54fb_65w770*kmr@a3eu)a-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 SITE_ID = 1
 
@@ -122,8 +122,15 @@ DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce',
+        'USER': 'root',
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST':'localhost',
+        'PORT':'3306',
+        'OPTIONS':{
+            'autocommit':True
+        }
     }
 }
 
