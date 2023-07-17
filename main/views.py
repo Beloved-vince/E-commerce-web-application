@@ -349,7 +349,6 @@ def update_profile(request):
         messages.success(request, 'Profile updated successfully!')
         return JsonResponse({"message": "Profile update completed"})
 
-    # Render the profile update form
     return render(request, 'user_accountpage.html')
 
 def change_password(request):
